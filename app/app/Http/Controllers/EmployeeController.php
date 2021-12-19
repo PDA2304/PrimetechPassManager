@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
+
+/**
+ * Контроллер отвечающий за взаимодействия с таблицей Employee
+ */
 class EmployeeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Вызов всех пользователей
      */
     public function index()
     {
@@ -18,10 +20,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Добавление сотрудника то есть его регистрация
      */
     public function store(Request $request)
     {
@@ -29,35 +28,25 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
+     * Вывоз сотрудника по его id
      */
-    public function show(Employee $employee)
+    public function show($id)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
+     * Изменнение данных сотрудника
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, $id)
     {
         //
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
+     * Удаление сотрудника по его id
      */
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
         //
     }
