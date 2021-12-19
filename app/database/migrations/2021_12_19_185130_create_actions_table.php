@@ -15,7 +15,7 @@ class CreateActionsTable extends Migration
     {
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
-            $table->date('action-date');
+            $table->date('action_date');
             $table->integer('user_id');
             $table->integer('type_action_id');
             $table->timestamps();
