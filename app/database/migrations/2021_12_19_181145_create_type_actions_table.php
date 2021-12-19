@@ -15,6 +15,7 @@ class CreateTypeActionsTable extends Migration
     {
         Schema::create('type_actions', function (Blueprint $table) {
             $table->id();
+            $table->string('action_name')->unique();
             $table->timestamps();
         });
     }
