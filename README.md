@@ -7,7 +7,8 @@
 ### 1. Дизайн 
 - 1 Авторизация
  ![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/Auth.png)
-
+- 2 Главное Окно
+ ![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/home.png)
 ### 2. Документация API
 
 
