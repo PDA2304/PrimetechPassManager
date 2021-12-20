@@ -14,6 +14,9 @@ create_model:
 create_migrate:
 	docker exec php-fpm php artisan make:migration $(call args)
 
+create_api_model_migration_controller:
+	docker exec php-fpm php artisan make:model $(call args) --api -m
+
 artisan_help:
 	docker exec php-fpm php artisan
 
