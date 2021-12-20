@@ -8,6 +8,13 @@ migrate:
 migrate_fresh:
 	docker exec php-fpm php artisan migrate:fresh
 
+migrate_seed:
+	docker exec php-fpm php artisan migrate:fresh 
+	docker exec php-fpm php artisan db:seed
+
+seed:
+	docker exec php-fpm php artisan db:seed
+
 create_model:
 	docker exec php-fpm php artisan make:model $(call args)
 
