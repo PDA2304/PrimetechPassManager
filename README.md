@@ -5,9 +5,9 @@
 Для просмотра сайта нужно перейти в ветку **web**. В данной ветки находиться сайт и созданное api.
 
 ### 1. Дизайн 
-- 1 Авторизация
+#### Авторизация
  ![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/Auth.png)
-- 2 Главное Окно
+#### Главное Окно
  ![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/home.png)
 ### 2. Документация API
 
@@ -17,5 +17,13 @@
 
 ### 1. Дизайн 
 
-- 1 Авторизация
-- 2 Регистрация 
+#### Загрузочный экран </br>
+![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/Загрузочный%20экран.png)
+#### Все пароли пользователя </br>
+![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/Все%20данные%20пользователя.png)
+#### Просмотр информаиции о пароле пользователя </br>
+![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/Информация%20о%20данных%20создателя.png)
+#### Модальное окно добавление сотрудника к паролю
+![image](https://github.com/PDA2304/PrimetechPassManager/blob/main/Модальное%20окно%20Добавление%20сотрудника.png)
+
+
