@@ -41,8 +41,7 @@ services:
       volumes:
         - ./app:/var/www/
         - ./app/storage/app/public:/var/www/public/storage
-        - ./nginx/logs/nginx-access.log:/var/log/nginx/access.log
-        - ./nginx/logs/nginx-error.log:/var/log/nginx/error.log
+        - ./nginx/logs:/var/log/nginx
       depends_on:
         - php
         - postgres
