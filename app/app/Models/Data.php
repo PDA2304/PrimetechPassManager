@@ -13,8 +13,12 @@ class Data extends Model
 
     protected $fillable = [
         'id',
+        'name',
         'login',
         'password',
+        'date',
+        'comment',
+        'user_id',
     ];
 
     protected $hidden = [
