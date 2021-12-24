@@ -15,9 +15,15 @@ class CreateDataTable extends Migration
     {
         Schema::create('data', function (Blueprint $table) {
             $table->id();
+            $table->string('name',30);
             $table->string('login',30);
             $table->string('password',30);
+            $table->date('date');
+            $table->string('сomment',250);
+            $table->integer('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('employees')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
