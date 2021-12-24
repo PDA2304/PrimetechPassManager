@@ -21,11 +21,20 @@ create_model:
 create_migrate:
 	docker exec php-fpm php artisan make:migration $(call args)
 
+create_resource:
+	docker exec php-fpm php artisan make:resource $(call args)
+
+create_resource:
+	docker exec php-fpm php artisan make:request $(call args)
+
 create_api_model_migration_controller:
 	docker exec php-fpm php artisan make:model $(call args) --api -m
 
 artisan_help:
 	docker exec php-fpm php artisan
+
+artisan_list_route:
+	docker exec php-fpm php artisan route:list
 
 docker_stop:
 	docker-compose -f "docker-compose.yml" -p "primetechpassmanager" stop
