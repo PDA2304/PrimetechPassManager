@@ -24,7 +24,7 @@ create_migrate:
 create_resource:
 	docker exec php-fpm php artisan make:resource $(call args)
 
-create_resource:
+create_request:
 	docker exec php-fpm php artisan make:request $(call args)
 
 create_api_model_migration_controller:
