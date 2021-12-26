@@ -125,6 +125,7 @@ return [
     'uploaded'             => 'Загрузка поля :attribute не удалась.',
     'url'                  => 'Поле :attribute имеет ошибочный формат URL.',
     'uuid'                 => 'Поле :attribute должно быть корректным UUID.',
+    'alpha_spaces'         => 'Атрибут : может содержать только буквы и пробелы.',
     'custom'               => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
