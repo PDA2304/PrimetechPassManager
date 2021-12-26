@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\ActionController;
-use App\Http\Controllers\DataController;
-use App\Http\Controllers\DataUserController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\TypeActionController;
+use App\Http\Controllers\API\ActionController;
+use App\Http\Controllers\API\DataController;
+use App\Http\Controllers\API\DataUserController;
+use App\Http\Controllers\API\EmployeeController;
+use App\Http\Controllers\API\TypeActionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 /*
