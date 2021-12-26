@@ -16,16 +16,16 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        $typeActionName = [
+        $typeActionName = array(
             'Добавление',
             'Удаленние',
             'Изменнение пароля',
             'Изменнение логина',
-            'Изменнение названиая данных'
-        ];
+            'Изменнение названия данных'
+        );
 
         foreach ($typeActionName as $key) {
-            TypeAction::created(
+            TypeAction::create(
                 [
                     'action_name' => $key
                 ]
