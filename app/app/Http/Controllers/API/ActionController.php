@@ -2,35 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Helpers\CheckHelpers;
-use App\Http\Requests\TypeActionRequest;
-use App\Http\Resources\TypeActionResource;
-use App\Models\TypeAction;
+use Illuminate\Http\Request;
 
 
-/**
- * Конроллер которрый отвечает за взаимодейсвтие
- * с таблице Category
- */
 class ActionController extends Controller
 {
-    /**
-     * Вывод всех данных из таблицы 
-     */
     public function index()
     {
-        $result = TypeActionResource::collection(TypeAction::all());
-        return response()->json($result, 200);
     }
 
     /**
      * Добавление данных в таблицу
      */
-    public function store(TypeActionRequest $request)
+    public function store(Request $request)
     {
-        $result = TypeAction::create($request->all());
-        $request->action_name = strtolower($request->action_name);
-        return response()->json(new TypeActionResource($result), 200);
     }
 
     /**
@@ -38,19 +23,14 @@ class ActionController extends Controller
      */
     public function show($id)
     {
-        $result = CheckHelpers::extension(TypeAction::find($id));
-        return response()->json(new TypeActionResource($result), 200);
     }
 
     /**
      *  Изменние данных по id
      */
-    public function update(TypeActionRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $result = CheckHelpers::extension(TypeAction::find($id));
-        $request->action_name = strtolower($request->action_name);
-        $result->update($request->all());
-        return response()->json(new TypeActionResource($result));
+        
     }
 
     /**
@@ -58,8 +38,6 @@ class ActionController extends Controller
      */
     public function destroy($id)
     {
-        $result = CheckHelpers::extension(TypeAction::find($id),null);
-        $result->delete();
-        return response()->json(new TypeActionResource($result), 200);;
+
     }
 }
