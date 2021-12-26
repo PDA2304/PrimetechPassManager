@@ -2,63 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Action;
-use Illuminate\Http\Request;
+use App\Http\Helpers\CheckHelpers;
+use App\Http\Requests\TypeActionRequest;
+use App\Http\Resources\TypeActionResource;
+use App\Models\TypeAction;
 
+
+/**
+ * Конроллер которрый отвечает за взаимодейсвтие
+ * с таблице Category
+ */
 class ActionController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Вывод всех данных из таблицы 
      */
     public function index()
     {
-        //
+        $result = TypeActionResource::collection(TypeAction::all());
+        return response()->json($result, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Добавление данных в таблицу
      */
-    public function store(Request $request)
+    public function store(TypeActionRequest $request)
     {
-        //
+        $result = TypeAction::create($request->all());
+        $request->action_name = strtolower($request->action_name);
+        return response()->json(new TypeActionResource($result), 200);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Action  $action
-     * @return \Illuminate\Http\Response
+     *  Вывод строки по его id
      */
-    public function show(Action $action)
+    public function show($id)
     {
-        //
+        $result = CheckHelpers::extension(TypeAction::find($id));
+        return response()->json(new TypeActionResource($result), 200);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Action  $action
-     * @return \Illuminate\Http\Response
+     *  Изменние данных по id
      */
-    public function update(Request $request, Action $action)
+    public function update(TypeActionRequest $request, $id)
     {
-        //
+        $result = CheckHelpers::extension(TypeAction::find($id));
+        $request->action_name = strtolower($request->action_name);
+        $result->update($request->all());
+        return response()->json(new TypeActionResource($result));
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Action  $action
-     * @return \Illuminate\Http\Response
+     *  Удаление данных по определенному id
      */
-    public function destroy(Action $action)
+    public function destroy($id)
     {
-        //
+        $result = CheckHelpers::extension(TypeAction::find($id),null);
+        $result->delete();
+        return response()->json(new TypeActionResource($result), 200);;
     }
 }
