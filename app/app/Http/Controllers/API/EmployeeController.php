@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthorizationRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
  * Контроллер отвечающий за взаимодействия с таблицей Employee
@@ -54,7 +56,31 @@ class EmployeeController extends Controller
             'login' => trim($request->login),
             'password' => Hash::make(trim($request->password)),
         ]);
-        return response()->json(new EmployeeResource($result),200);
+        return response()->json(new EmployeeResource($result), 200);
+    }
+
+    public function sing_in(AuthorizationRequest $request)
+    {
+        $user = Employee::where('login', $request->login)->first();
+        $user->token = Str::random(100);
+        $user->save();
+        return response()->json([
+            "user_name" => $user->user_name,
+            "token" => $user->token
+        ], 200);
+    }
+
+
+    public function logout(Request $request)
+    {
+        $user = Employee::where('user_name', $request->user_name)->first();
+
+        if ($user->token == null)
+            return response()->json(["message" => "Пользователь не авторизован"], 400);
+
+        $user->token = null;
+        $user->save();
+        return response()->json(["message" =>"Пользователь вышел из системы"], 200);
     }
 
     /**
