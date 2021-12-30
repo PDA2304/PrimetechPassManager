@@ -22,8 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/category',ActionController::class);
+Route::apiResource('/action',ActionController::class);
 Route::apiResource('/data',DataController::class);
 Route::apiResource('/data_user',DataUserController::class);
 Route::apiResource('/employee',EmployeeController::class);
+Route::post('/sing_up',[EmployeeController::class, 'sing_up']);
 Route::apiResource('/type_action',TypeActionController::class);
