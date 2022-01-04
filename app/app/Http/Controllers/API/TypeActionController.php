@@ -54,8 +54,8 @@ class TypeActionController extends Controller
      */
     public function destroy($id)
     {
-        $result = CheckHelpers::extension(TypeAction::find($id),null);
+        $result = CheckHelpers::extension(TypeAction::find($id));
         $result->delete();
-        return response()->json(new TypeActionResource($result), 200);;
+        return response()->json(new TypeActionResource($result), 200);
     }
 }
