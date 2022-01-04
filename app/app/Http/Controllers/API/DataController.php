@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DataResource;
 use App\Models\Data;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class DataController extends Controller
      */
     public function index()
     {
-        //
+        $result = DataResource::collection(Data::all());
+        return response()->json($result,200);
     }
 
     /**
@@ -26,7 +28,7 @@ class DataController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
