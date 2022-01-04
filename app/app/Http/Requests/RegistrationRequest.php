@@ -16,7 +16,7 @@ class RegistrationRequest extends ApiRequest
                     $fail('Taкой логин уже используется другим пользователем');
                 }
             }],
-            'password' => ["required", "max:16"]
+            'password' => ["required",'min:8', "max:16"]
         ];
     }
 }
