@@ -18,7 +18,6 @@ class Data extends Model
         'name',
         'login',
         'password',
-        'date',
         'description',
         'user_id',
     ];

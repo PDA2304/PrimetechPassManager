@@ -18,7 +18,6 @@ class CreateDataTable extends Migration
             $table->string('name',30);
             $table->string('login',30);
             $table->string('password',30);
-            $table->date('date');
             $table->string('description',250)->nullable();
             $table->integer('user_id')->unique();
             $table->timestamps();
