@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\TypeAction;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,6 +33,14 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         }
-       
+
+        $employee = new Employee();
+
+        $employee->create([
+            'role' => true,
+            'user_name' => 'administrator',
+            'login' => 'admin',
+            'password' => Hash::make('admin'),
+        ]);
     }
 }

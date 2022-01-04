@@ -18,6 +18,7 @@ class Employee extends Model
     protected $fillable = [
         'id',
         'user_name',
+        'role',
         'token',
         'login',
         'password',

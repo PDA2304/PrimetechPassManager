@@ -66,6 +66,7 @@ class EmployeeController extends Controller
         $user->save();
         return response()->json([
             "user_name" => $user->user_name,
+            'role' => $user->role,
             "token" => $user->token
         ], 200);
     }
