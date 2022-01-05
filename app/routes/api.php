@@ -22,11 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/action',ActionController::class);
-Route::apiResource('/data',DataController::class);
-Route::apiResource('/data_user',DataUserController::class);
-Route::apiResource('/employee',EmployeeController::class);
-Route::post('/sing_up',[EmployeeController::class, 'sing_up']);
-Route::post('/sing_in',[EmployeeController::class, 'sing_in']);
-Route::post('/logout',[EmployeeController::class, 'logout']);
-Route::apiResource('/type_action',TypeActionController::class);
+Route::apiResources([
+    '/action' => ActionController::class,
+    '/data' => DataController::class,
+    '/data_user' => DataUserController::class,
+    '/employee' => EmployeeController::class,
+    '/type_action' => TypeActionController::class,
+]);// Базовые маршруты всех конроллеров
+
+Route::post('/sing_up',[EmployeeController::class, 'sing_up']); // Маршрут для регистрация пользователя
+Route::post('/sing_in',[EmployeeController::class, 'sing_in']); // Маршрут для авторизации пользователя
+Route::post('/logout',[EmployeeController::class, 'logout']); // Маршрут для выхода из аккаунта
