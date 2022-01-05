@@ -19,7 +19,7 @@ class CreateDataTable extends Migration
             $table->string('login',30);
             $table->string('password',30);
             $table->string('description',250)->nullable();
-            $table->integer('user_id')->unique();
+            $table->integer('user_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('employees')->onDelete('cascade')->onUpdate('cascade');

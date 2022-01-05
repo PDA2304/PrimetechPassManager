@@ -19,7 +19,7 @@ class DataResource extends JsonResource
             'name' => $this->name,
             'login' => $this->login,
             'password' => $this->password,
-            'comment' => $this->description,
+            'description' => $this->description,
             'creator' => new EmployeeResource($this->employee),
         ];
     }
