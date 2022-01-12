@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:passmanager/routes.dart';
+
+import 'constant/url.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(PassManager(
+    router: AppRouter(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class PassManager extends StatelessWidget {
+  final AppRouter router;
+
+  PassManager({Key? key, required this.router}) : super(key: key);
+
+  bool isSingIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +22,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Text(""),
+      onGenerateRoute: router.generateRouter,
+      initialRoute: isSingIn ? home : singIn,
     );
   }
 }
