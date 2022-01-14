@@ -6,6 +6,7 @@ const red = Color(0xFFD80000);
 const orange = Color(0xFFD86800);
 const black = Color(0xFF000000);
 const white = Color(0xFFFFFFFF);
+const grey = Colors.grey;
 
 /*
   Класс отвечающий за перевод цвета из Colors в MaterialColor
