@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:passmanager/bloc/sing_in/sing_in_form_bloc.dart';
 import 'package:passmanager/constant/url.dart';
 import 'package:passmanager/pages/data_user.dart';
 import 'package:passmanager/pages/home.dart';
@@ -14,7 +16,11 @@ class AppRouter {
     switch (settings.name) {
       case singIn:
         {
-          return MaterialPageRoute(builder: (_) => SingIn());
+          return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                    create: (context) => SingInFormBloc(),
+                    child: SingIn(),
+                  ));
         }
       case singUp:
         {
@@ -26,7 +32,7 @@ class AppRouter {
         }
       case dataUser:
         {
-          return MaterialPageRoute(builder: (_) =>DataUser());
+          return MaterialPageRoute(builder: (_) => DataUser());
         }
     }
     return null;
