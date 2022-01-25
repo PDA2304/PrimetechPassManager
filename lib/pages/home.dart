@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:passmanager/bloc/home/home_bloc.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/url.dart';
