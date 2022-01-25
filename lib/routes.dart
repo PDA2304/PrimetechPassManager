@@ -6,6 +6,7 @@ import 'package:passmanager/pages/data_user.dart';
 import 'package:passmanager/pages/home.dart';
 import 'package:passmanager/pages/sing_in.dart';
 import 'package:passmanager/pages/sing_up.dart';
+import 'bloc/home/home_bloc.dart';
 
 /*
   Класс отвчающией за навигацию в приложении
@@ -28,7 +29,11 @@ class AppRouter {
         }
       case home:
         {
-          return MaterialPageRoute(builder: (_) => Home());
+          return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                    create: (context) => HomeBloc(),
+                    child: Home(),
+                  ));
         }
       case dataUser:
         {

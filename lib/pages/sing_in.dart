@@ -39,12 +39,13 @@ class SingIn extends StatelessWidget {
                 backgroundColor: blue,
                 foregroundColor: white,
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // you'd often call a server or save the information in a database.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
-                  }
+                  Navigator.pushNamedAndRemoveUntil(context, home, (route) => false);
+                  // if (_formKey.currentState!.validate()) {
+                  //   // you'd often call a server or save the information in a database.
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text('Processing Data')),
+                  //   );
+                  // }
                 }),
             Button(
               text: 'Регистрация',
