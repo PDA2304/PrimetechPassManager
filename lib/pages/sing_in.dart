@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:passmanager/bloc/sing_in/sing_in_form_bloc.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/url.dart';
@@ -19,18 +20,13 @@ class SingIn extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.only(top: 100),
-              width: MediaQuery.of(context).size.width,
-              height: 190,
-              child: const Text(
-                "Авторизация",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: black,
-                  fontSize: 28,
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top:85,left: 30, bottom: 30),
+                child: SvgPicture.asset(
+                  "assets/logo.svg",
+                  width: 180,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
             _form(_formKey),
