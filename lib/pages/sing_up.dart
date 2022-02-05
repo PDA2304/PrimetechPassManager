@@ -16,7 +16,7 @@ class SingUp extends StatelessWidget {
   /// В данном списке хранится валидациия для полей
   List<String?> valid = [null, null, null];
 
-  bool isLoad = false ;
+  bool isLoad = false;
 
   /// Функция для рендринга окна
   @override
@@ -67,8 +67,10 @@ class SingUp extends StatelessWidget {
                 ),
                 _form(),
                 isLoad
-                    ? CircularProgressIndicator(
-                        color: blue,
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: blue,
+                        ),
                       )
                     : Button(
                         text: 'Регистрация',
