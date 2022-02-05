@@ -1,135 +1,184 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:passmanager/bloc/sing_up/sing_up_bloc.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/url.dart';
 import 'package:passmanager/widget/button_max_width.dart';
 
 class SingUp extends StatelessWidget {
   SingUp({Key? key}) : super(key: key);
+
+  /// Переменная отвечающая за вызов валидации формы
   final _formKey = GlobalKey<FormState>();
 
+  /// В данном списке хранится валидациия для полей
+  List<String?> valid = [null, null, null];
+
+  bool isLoad = false ;
+
+  /// Функция для рендринга окна
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, singIn, (route) => false);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: blue,
+          ),
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(left: 20, right: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 100),
-              width: MediaQuery.of(context).size.width,
-              height: 190,
-              child: const Text(
-                "Регистрация",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: black,
-                  fontSize: 28,
+        child: BlocConsumer<SingUpBloc, SingUpState>(
+          listener: (context, state) {
+            print(state.isSucces);
+            if (state.isSucces == true) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, home, (route) => false);
+            }
+            valid[0] = state.validUserName;
+            valid[1] = state.validlogin;
+            valid[2] = state.validpassword;
+            isLoad = state.isLoad;
+            if (_formKey.currentState!.validate()) {}
+          },
+          builder: (context, snapshot) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, bottom: 30),
+                    child: SvgPicture.asset(
+                      "assets/logo.svg",
+                      width: 180,
+                    ),
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            _form(_formKey),
-            Button(
-                text: 'Регистрация',
-                backgroundColor: blue,
-                foregroundColor: white,
-                onPressed: () {
-
-                }),
-            Button(
-              text: 'Назад',
-              backgroundColor: null,
-              foregroundColor: blue,
-              onPressed: () => {Navigator.pushNamedAndRemoveUntil(context, singIn, (route) => false)},
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom))
-          ],
+                _form(),
+                isLoad
+                    ? CircularProgressIndicator(
+                        color: blue,
+                      )
+                    : Button(
+                        text: 'Регистрация',
+                        backgroundColor: blue,
+                        foregroundColor: white,
+                        onPressed: () {
+                          context.read<SingUpBloc>().add(OnLoad(true));
+                          context.read<SingUpBloc>().add(OnResponse());
+                        }),
+                Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom))
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _form(GlobalKey<FormState> formKey) {
+  //Функция в которой находятся элементы формы регистрации
+  Widget _form() {
     return Form(
-      key: formKey,
+      key: _formKey,
       child: Column(
         children: [
-          _name(),
+          _name(), // Поле Имени
           const Padding(padding: EdgeInsets.only(bottom: 15)),
-          _login(),
+          _login(), // Поле логина
           const Padding(padding: EdgeInsets.only(bottom: 15)),
-          _password(),
+          _password(), // Поле пароля
           const Padding(padding: EdgeInsets.only(bottom: 15))
         ],
       ),
     );
   }
 
-  Widget _name()
-  {
-    return TextFormField(
-        style: const TextStyle(fontSize: 20),
-        decoration: const InputDecoration(
-          labelText: "Имя",
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: blue,
-            ),
-          ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: red),
-          ),
-        ));
-  }
-
-  Widget _login() {
-    return const TextField(
-        style: TextStyle(fontSize: 20),
-        decoration: InputDecoration(
-          labelText: "Логин",
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: blue,
-            ),
-          ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: red),
-          ),
-        ));
-  }
-
-  Widget _password() {
-    return TextFormField(
+  // Виджет который создает поле Name
+  Widget _name() {
+    return BlocBuilder<SingUpBloc, SingUpState>(builder: (context, snapshot) {
+      return TextFormField(
+          onChanged: (value) =>
+              context.read<SingUpBloc>().add(OnChangedUserName(value)),
+          validator: (value) => valid[0],
           style: const TextStyle(fontSize: 20),
-          onChanged: (value) {
-          },
           decoration: const InputDecoration(
-              labelText: "Пароль",
-              focusedBorder:  OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: blue,
-                ),
+            labelText: "Имя",
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: blue,
               ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: red),
-              ),
-              // suffixIcon: InkWell(
-              //   child: state.isChek
-              //       ? const Icon(Icons.visibility_off,color: grey)
-              //       : const Icon(Icons.visibility,color: grey),
-              //   onTap: () {
-              //     // BlocProvider.of<ObscureBloc>(context).add(ObscureChanged(state.isChek));
-              //     context
-              //         .read<SingInFormBloc>()
-              //         .add(ObscureCheckChanged(state.isChek));
-              //   },
-              // )),
-        )
-    );
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: red),
+            ),
+          ));
+    });
   }
 
+  // Виджет который создает поле Login
+  Widget _login() {
+    return BlocBuilder<SingUpBloc, SingUpState>(builder: (context, state) {
+      return TextFormField(
+          onChanged: (value) =>
+              context.read<SingUpBloc>().add(OnChangedLogin(value)),
+          validator: (value) => valid[1],
+          style: TextStyle(fontSize: 20),
+          decoration: const InputDecoration(
+            labelText: "Логин",
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: blue,
+              ),
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: red),
+            ),
+          ));
+    });
+  }
+
+  // Виджет который создает поле Password
+  Widget _password() {
+    return BlocBuilder<SingUpBloc, SingUpState>(builder: (context, state) {
+      return TextFormField(
+        onChanged: (value) =>
+            context.read<SingUpBloc>().add(OnChangedPassword(value)),
+        validator: (value) => valid[2],
+        obscureText: state.isObscure,
+        style: const TextStyle(fontSize: 20),
+        decoration: InputDecoration(
+          labelText: "Пароль",
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: blue,
+            ),
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: red),
+          ),
+          suffixIcon: InkWell(
+            child: state.isObscure
+                ? const Icon(Icons.visibility_off, color: grey)
+                : const Icon(Icons.visibility, color: grey),
+            onTap: () {
+              context.read<SingUpBloc>().add(ChangedObscure(state.isCheck));
+            },
+          ),
+        ),
+      );
+    });
+  }
 }
