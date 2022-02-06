@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passmanager/bloc/sing_in/sing_in_form_bloc.dart';
+import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
 import 'package:passmanager/bloc/sing_up/sing_up_bloc.dart';
 import 'package:passmanager/constant/url.dart';
 import 'package:passmanager/pages/add_data.dart';
@@ -22,7 +22,7 @@ class AppRouter {
         {
           return MaterialPageRoute(
               builder: (_) => BlocProvider(
-                    create: (context) => SingInFormBloc(),
+                    create: (context) => SingInBloc(),
                     child: SingIn(),
                   ));
         }
