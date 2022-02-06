@@ -1,33 +1,548 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passmanager/bloc/home/home_bloc.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/url.dart';
-import 'package:passmanager/pages/data.dart';
-import 'package:passmanager/pages/settings.dart';
-
-import 'data_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
 
-  Widget _floatingActionButton(BuildContext context, int index) {
-    if (index == 0) {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, addData);
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: blue,
-      );
-    }
-    return Container();
+  getdata() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('isRegistration', false);
   }
 
-  List<Widget> _actions(BuildContext context, int index) {
-    if (index == 2) {
-      return [];
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: blue,
+                width: MediaQuery.of(context).size.width,
+                child: const DrawerHeader(
+                  child: Text(
+                    "Header",
+                    style: TextStyle(color: white),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Column(children: [
+                ListTile(
+                  leading: const Icon(Icons.create, color: blue),
+                  title: Text("Изменение учетных данных"),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.auto_delete, color: blue),
+                  title: const Text("Корзина"),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ]),
+            ),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app_outlined, color: blue),
+              title: const Text("Выход",style: TextStyle(backgroundColor: blue),),
+              onTap: () {
+                getdata();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, singIn, (route) => false);
+              },
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        title: const Text("Данные"),
+        centerTitle: true,
+        backgroundColor: blue,
+        actions: _actions(context),
+      ),
+      floatingActionButton: _floatingActionButton(context),
+      body: ListView(
+        children: [
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Доступные", style: TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, showData);
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 15, top: 15, bottom: 15),
+                    child: Row(
+                      children: const [
+                        Text("Название", style: TextStyle(fontSize: 18)),
+                        Expanded(flex: 2, child: SizedBox()),
+                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(height: 1, color: grey)
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _floatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamed(context, addData);
+      },
+      child: const Icon(Icons.add),
+      backgroundColor: blue,
+    );
+  }
+
+  List<Widget> _actions(BuildContext context) {
     return [
       IconButton(
           onPressed: () {
@@ -35,59 +550,6 @@ class Home extends StatelessWidget {
           },
           icon: const Icon(Icons.search))
     ];
-  }
-
-  final List<Widget> _sreens = const [Data(), DataUser(), Settings()];
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(state.title),
-          centerTitle: true,
-          backgroundColor: blue,
-          actions: _actions(context, state.index),
-        ),
-        floatingActionButton: _floatingActionButton(context, state.index),
-        body: _sreens[state.index],
-        bottomNavigationBar: BottomNavigationBar(
-          iconSize: 30,
-          unselectedItemColor: white,
-          selectedIconTheme: const IconThemeData(
-            opacity: 1.0,
-          ),
-          unselectedIconTheme: const IconThemeData(opacity: 0.5, size: 25),
-          backgroundColor: blue,
-          items: const [
-            BottomNavigationBarItem(
-              label: "Данные",
-              icon: Icon(Icons.storage, color: white),
-            ),
-            BottomNavigationBarItem(
-              label: "Доступные",
-              icon: Icon(
-                Icons.group,
-                color: white,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Настройки',
-              icon: Icon(
-                Icons.settings,
-                color: white,
-                size: 25,
-              ),
-            ),
-          ],
-          onTap: (index) {
-            context.read<HomeBloc>().add(LoadChanged(index));
-          },
-          currentIndex: state.index,
-          selectedItemColor: white,
-        ),
-      );
-    });
   }
 }
 
