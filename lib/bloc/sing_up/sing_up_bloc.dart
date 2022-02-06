@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
 import 'package:passmanager/data/network_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -69,7 +70,8 @@ class SingUpBloc extends Bloc<SingUpEvent, SingUpState> {
           /// Ответ получен успешно
           if (value.containsKey(200)) {
             /// Добавляем в системный файл что пльзователь авторизовался
-            SharedPreferences preferences = await SharedPreferences.getInstance();
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
             preferences.setBool("isRegistration", true);
             emit(Succes(true, true));
           }
