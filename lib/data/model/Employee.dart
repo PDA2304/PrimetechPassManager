@@ -3,7 +3,7 @@
  */
 class Employee {
   final int id;
-  final String role;
+  final bool role;
   final String token;
   final String userName;
   final String login;
@@ -11,7 +11,7 @@ class Employee {
 
   Employee({
     this.id = 1,
-    this.role = '',
+    this.role = false,
     this.token = '',
     this.userName = '',
     this.login = '',
