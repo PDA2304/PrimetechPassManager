@@ -10,7 +10,11 @@ class RegistrationRequest extends ApiRequest
     public function rules()
     {
         return [
-            'user_name' => ["required", "min:3","max:30"],
+            'user_name' => ["required", "min:3","max:30",function ($attribute, $value, $fail) {
+                if (Employee::where('user_name', '=', $value)->first()) {
+                    $fail('Taкое имя уже используется другим пользователем');
+                }
+            }],
             'login' => ["required", "min:3","max:30",function ($attribute, $value, $fail) {
                 if (Employee::where('login', '=', $value)->first()) {
                     $fail('Taкой логин уже используется другим пользователем');
