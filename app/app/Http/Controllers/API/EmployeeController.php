@@ -54,6 +54,7 @@ class EmployeeController extends Controller
         $result = Employee::create([
             'user_name' => trim($request->user_name),
             'login' => trim($request->login),
+            "token" => Str::random(100),
             'password' => Hash::make(trim($request->password)),
         ]);
         return response()->json(new EmployeeResource($result), 200);
