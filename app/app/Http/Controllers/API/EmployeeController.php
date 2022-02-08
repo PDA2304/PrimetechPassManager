@@ -62,9 +62,14 @@ class EmployeeController extends Controller
     public function sing_in(AuthorizationRequest $request)
     {
         $user = Employee::where('login', $request->login)->first();
+        if(!Hash::check($request->password,$user->password))
+        {
+            return response()->json(['password'=> ["Не верный пароль"]], 422);
+        }
         $user->token = Str::random(100);
-        $user->save();
+        $user->save(); 
         return response()->json([
+            "id"=> $user->id,
             "user_name" => $user->user_name,
             'role' => $user->role,
             "token" => $user->token
