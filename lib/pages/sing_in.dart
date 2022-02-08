@@ -55,6 +55,8 @@ class SingIn extends StatelessWidget {
                     child: InkWell(
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
                       onTap: () {
                         context.read<SingInBloc>().add(OnAdminClick());
                       },
