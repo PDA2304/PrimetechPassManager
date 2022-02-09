@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
+import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/data/network_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'sing_up_event.dart';
 
@@ -59,7 +58,6 @@ class SingUpBloc extends Bloc<SingUpEvent, SingUpState> {
         await network
             .singUp(state.userName, state.login, state.password)
             .then((value) async {
-          print(value);
 
           /// Ошибка ввода данных
           if (value.containsKey(422)) {
@@ -69,10 +67,12 @@ class SingUpBloc extends Bloc<SingUpEvent, SingUpState> {
 
           /// Ответ получен успешно
           if (value.containsKey(200)) {
-            /// Добавляем в системный файл что пльзователь авторизовался
-            SharedPreferences preferences =
-                await SharedPreferences.getInstance();
-            preferences.setBool("isRegistration", true);
+            /// Добавляем данные в системный файл после регистрации пользователя
+            Config.token = value[200]["token"];
+            Config.userName = value[200]["user_name"];
+            Config.userId = value[200]["id"];
+            Config.saveUserData();
+
             emit(Succes(true, true));
           }
         });

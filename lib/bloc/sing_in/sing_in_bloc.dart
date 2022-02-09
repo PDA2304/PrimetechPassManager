@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/data/network_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'sing_in_event.dart';
 
@@ -37,7 +37,6 @@ class SingInBloc extends Bloc<SingInEvent, SingInState> {
        * пользователь вводит пароль
        */
       if (event is OnChangedPassword) {
-        print(event.password);
         emit(Copy(state.isObscure, state.isLoad, state.login, event.password));
       }
 
@@ -57,10 +56,12 @@ class SingInBloc extends Bloc<SingInEvent, SingInState> {
          */
         await network.singIn(state.login, state.password).then((value) async {
           if (value.containsKey(200)) {
-            SharedPreferences preferences = await SharedPreferences
-                .getInstance();
-            preferences.setBool("isRegistration", true);
-            preferences.setString("token", value[200]["token"]);
+            /// Добавляем данные в системный файл после авторизации пользователя
+            Config.token = value[200]["token"];
+            Config.userName = value[200]["user_name"];
+            Config.userId = value[200]["id"];
+            Config.saveUserData();
+
             emit(Succes(true));
           }
           if (value.containsKey(422)) {
