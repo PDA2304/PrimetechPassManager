@@ -22,4 +22,14 @@ class RequestCreateData extends ApiRequest
             }],
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "name"=>'название',
+            "login"=>'логин',
+            "password"=>'пароль',
+            "description"=>'комментарий',
+        ];
+    }
 }

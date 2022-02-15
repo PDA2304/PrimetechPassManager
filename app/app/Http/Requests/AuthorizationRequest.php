@@ -18,4 +18,12 @@ class AuthorizationRequest extends ApiRequest
             'password' => ["required", "max:16"]
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "login"=>'логин',
+            "password"=>'пароль',
+        ];
+    }
 }
