@@ -23,4 +23,13 @@ class RegistrationRequest extends ApiRequest
             'password' => ["required",'min:8', "max:16"]
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "user_name"=>'имя пользователя',
+            "login"=>'логин',
+            "password"=>'пароль',
+        ];
+    }
 }

@@ -15,4 +15,14 @@ class RequestUpdateData extends FormRequest
             'description' => ["min:8","max:250"],
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "name"=>'название',
+            "login"=>'логин',
+            "password"=>'пароль',
+            "description"=>'комментарий',
+        ];
+    }
 }

@@ -16,4 +16,11 @@ class TypeActionRequest extends ApiRequest
             }]
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            "action_name"=>'название действия',
+        ];
+    }
 }
