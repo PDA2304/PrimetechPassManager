@@ -24,10 +24,10 @@ abstract class SingUpState {
   String? get validUserName =>
       response[422]["user_name"] == null ? null : response[422]["user_name"][0];
 
-  String? get validpassword =>
+  String? get validPassword =>
       response[422]["password"] == null ? null : response[422]["password"][0];
 
-  String? get validlogin =>
+  String? get validLogin =>
       response[422]["login"] == null ? null : response[422]["login"][0];
 
   SingUpState({

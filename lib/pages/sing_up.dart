@@ -47,8 +47,8 @@ class SingUp extends StatelessWidget {
                   context, home, (route) => false);
             }
             valid[0] = state.validUserName;
-            valid[1] = state.validlogin;
-            valid[2] = state.validpassword;
+            valid[1] = state.validLogin;
+            valid[2] = state.validPassword;
             isLoad = state.isLoad;
             if (_formKey.currentState!.validate()) {}
           },
