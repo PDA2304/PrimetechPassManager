@@ -162,7 +162,6 @@ class AddData extends StatelessWidget {
               context.read<AddDataBloc>().add(OnChangedDescription(value)),
           validator: (value) => valid[3],
           maxLength: 250,
-          obscureText: state.isCheck,
           decoration: const InputDecoration(
             labelText: "Комментарий",
             focusedBorder: OutlineInputBorder(
@@ -175,6 +174,8 @@ class AddData extends StatelessWidget {
             ),
           ),
           keyboardType: TextInputType.multiline,
+          minLines: 1,
+          maxLines: 5,
         );
       }),
     );
