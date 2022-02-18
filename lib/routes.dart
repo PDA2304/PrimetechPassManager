@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:passmanager/bloc/add_data_user/add_data_bloc.dart';
 import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
 import 'package:passmanager/bloc/sing_up/sing_up_bloc.dart';
 import 'package:passmanager/constant/url.dart';
@@ -38,7 +39,11 @@ class AppRouter {
         }
       case addData:
         {
-          return MaterialPageRoute(builder: (_) => AddData());
+          return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                    create: (context) => AddDataBloc(),
+                    child: AddData(),
+                  ));
         }
       case showData:
         {

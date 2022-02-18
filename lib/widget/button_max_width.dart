@@ -26,9 +26,12 @@ class Button extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all<Color>(foregroundColor),
         ),
         onPressed: () => onPressed(),
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 16),
+        child: Padding(
+          padding: const EdgeInsets.all(7.0),
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
       ),
     );
