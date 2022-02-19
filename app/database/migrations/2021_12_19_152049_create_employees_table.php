@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string("user_name",30)->unique();
+            $table->string("user_name",30);
             $table->boolean('role')->default('false');
             $table->string("token")->unique()->nullable();
             $table->string("login",30)->unique();
