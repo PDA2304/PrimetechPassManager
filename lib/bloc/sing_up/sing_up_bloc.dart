@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/data/network_service.dart';
 
 part 'sing_up_event.dart';
@@ -56,7 +55,7 @@ class SingUpBloc extends Bloc<SingUpEvent, SingUpState> {
       /// Отправка данных для регистрации
       if (event is OnResponse) {
         await network
-            .singUp(state.userName, state.login, state.password)
+            .confirmationCode(state.userName, state.login, state.password)
             .then((value) async {
 
           /// Ошибка ввода данных
@@ -65,15 +64,9 @@ class SingUpBloc extends Bloc<SingUpEvent, SingUpState> {
                 state.isObscure, false, false));
           }
 
-          /// Ответ получен успешно
+          /// Ответ получен успешно код для подтверждении почты
           if (value.containsKey(200)) {
-            /// Добавляем данные в системный файл после регистрации пользователя
-            Config.token = value[200]["token"];
-            Config.userName = value[200]["user_name"];
-            Config.userId = value[200]["id"];
-            Config.saveUserData();
-
-            emit(Succes(true, true));
+            emit(Succes(false, true,value[200]['number'],state.userName,state.login,state.password));
           }
         });
       }

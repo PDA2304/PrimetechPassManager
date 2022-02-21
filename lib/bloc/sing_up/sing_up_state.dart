@@ -18,6 +18,7 @@ abstract class SingUpState {
       "password": [null]
     }
   };
+  final int number = 0;
 
   bool get isCheck => !isObscure;
 
@@ -62,8 +63,12 @@ class Load extends SingUpState {
 class Succes extends SingUpState {
   final bool isLoad;
   final bool isSucces;
+  final int number ;
+  final String userName;
+  final String login;
+  final String password;
 
-  Succes(this.isLoad, this.isSucces);
+  Succes(this.isLoad, this.isSucces,this.number, this.userName, this.login, this.password);
 }
 
 class Copy extends SingUpState {

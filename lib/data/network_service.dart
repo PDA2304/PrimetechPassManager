@@ -55,6 +55,31 @@ class NetworkService {
     }
   }
 
+  /// Функция для отправки кода на почта после правильно введенных
+  /// данных пользователя
+  /// ecли возращается 200 до успешное отправка кода на почту
+  /// если возращается 422 произошла ошибка валидации данных
+  /// [userName] Имя пользователя
+  /// [login] Логин пользвоателя
+  /// [password] пароль пользователя
+  Future<Map<int, dynamic>> confirmationCode(
+      String userName,
+      String login,
+      String password,
+      ) async {
+    var request = Employee(
+      userName: userName,
+      login: login,
+      password: password,
+    ).toJson();
+    try {
+      final response = await dio.post("${baseUrl}email_confirmation", data: request);
+      return {200: response.data};
+    } on DioError catch (e) {
+      return {422: Employee().toError(e.response!.data)};
+    }
+  }
+
   ///  Функция Добаление данных ползователя
   ///  ecли возращается 200 до успешное добавление данных
   ///  если возращается 422 произошла ошибка валидации данных

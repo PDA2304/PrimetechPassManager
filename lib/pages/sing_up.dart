@@ -41,10 +41,14 @@ class SingUp extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20, right: 20),
         child: BlocConsumer<SingUpBloc, SingUpState>(
           listener: (context, state) {
-            print(state.isSucces);
             if (state.isSucces == true) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, home, (route) => false);
+              ///Передача данных в окно подтверждения почты с помощью кода
+              Navigator.pushNamed(context, confirmationCode, arguments: {
+                "number": state.number,
+                "login": state.login,
+                "userName": state.userName,
+                "password": state.password
+              });
             }
             valid[0] = state.validUserName;
             valid[1] = state.validLogin;
@@ -117,6 +121,7 @@ class SingUp extends StatelessWidget {
           validator: (value) => valid[0],
           style: const TextStyle(fontSize: 20),
           decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.people_alt_outlined),
             labelText: "Имя",
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -137,9 +142,10 @@ class SingUp extends StatelessWidget {
           onChanged: (value) =>
               context.read<SingUpBloc>().add(OnChangedLogin(value)),
           validator: (value) => valid[1],
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
           decoration: const InputDecoration(
-            labelText: "Логин",
+            prefixIcon: Icon(Icons.email_outlined),
+            labelText: "Электронная почта",
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: blue,
@@ -162,6 +168,7 @@ class SingUp extends StatelessWidget {
         obscureText: state.isObscure,
         style: const TextStyle(fontSize: 20),
         decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.lock_outline),
           labelText: "Пароль",
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(

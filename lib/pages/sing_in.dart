@@ -104,7 +104,8 @@ class SingIn extends StatelessWidget {
           validator: (value) => valid[0],
           style: const TextStyle(fontSize: 20),
           decoration: const InputDecoration(
-            labelText: "Логин",
+            prefixIcon: Icon(Icons.email_outlined),
+            labelText: "Электронная почта",
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: blue,
@@ -128,6 +129,7 @@ class SingIn extends StatelessWidget {
           validator: (value) => valid[1],
           obscureText: state.isObscure,
           decoration: InputDecoration(
+              prefixIcon: Icon(Icons.lock_outline),
               labelText: "Пароль",
               focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(

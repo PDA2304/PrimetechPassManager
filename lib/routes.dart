@@ -5,6 +5,7 @@ import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
 import 'package:passmanager/bloc/sing_up/sing_up_bloc.dart';
 import 'package:passmanager/constant/url.dart';
 import 'package:passmanager/pages/add_data.dart';
+import 'package:passmanager/pages/confirmation_code.dart';
 import 'package:passmanager/pages/home.dart';
 import 'package:passmanager/pages/show_data.dart';
 import 'package:passmanager/pages/sing_in.dart';
@@ -48,6 +49,11 @@ class AppRouter {
       case showData:
         {
           return MaterialPageRoute(builder: (_) => ShowData());
+        }
+      case confirmationCode:
+        {
+          var test = settings.arguments as Map<String,Object?>;
+          return MaterialPageRoute(builder: (_) => ConfirmationCode(argument: test,));
         }
     }
     return null;
