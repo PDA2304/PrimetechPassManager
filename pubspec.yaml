@@ -35,6 +35,9 @@ dependencies:
   dio: ^4.0.4
   flutter_svg: ^1.0.3
   shared_preferences: ^2.0.13
+  encrypt: ^5.0.1
+  pinput: ^1.2.2
+  desktop_window: ^0.4.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0
