@@ -33,4 +33,5 @@ Route::apiResources([
 Route::get('/data/indexUser/{id}',[DataController::class, 'indexUser']); //Маршрут для вывода данных определенного пользователя
 Route::post('/sing_up',[EmployeeController::class, 'sing_up']); // Маршрут для регистрация пользователя
 Route::post('/sing_in',[EmployeeController::class, 'sing_in']); // Маршрут для авторизации пользователя
+Route::post('/email_confirmation',[EmployeeController::class,'email_confirmation'],); // Маршрут для подтверждения почты
 Route::post('/logout',[EmployeeController::class, 'logout']); // Маршрут для выхода из аккаунта

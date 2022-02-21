@@ -9,6 +9,7 @@ use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 /**
@@ -48,7 +49,25 @@ class EmployeeController extends Controller
         //
     }
 
+    /**
+     * Отправка кода подтверждения на почту
+     */
+    public function email_confirmation(RegistrationRequest $request)
+    {
+        $mail_data = ["number" => random_int(10000, 99999)];
 
+        Mail::send('email', $mail_data, function ($message) use ($request) {
+            $message->sender("isip_d.a.pahomov@mpt.ru");
+            $message->to($request->login);
+            $message->subject("PrimetechPassManager подтвеждение почты");
+        });
+
+        return response()->json($mail_data, 200);
+    }
+
+    /**
+     * Регистрация пользователя
+     */
     public function sing_up(RegistrationRequest $request)
     {
         $result = Employee::create([
@@ -60,17 +79,19 @@ class EmployeeController extends Controller
         return response()->json(new EmployeeResource($result), 200);
     }
 
+    /**
+     * Авторизация пользователя
+     */
     public function sing_in(AuthorizationRequest $request)
     {
         $user = Employee::where('login', $request->login)->first();
-        if(!Hash::check($request->password,$user->password))
-        {
-            return response()->json(['password'=> ["Не верный пароль"]], 422);
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['password' => ["Не верный пароль"]], 422);
         }
         $user->token = Str::random(100);
-        $user->save(); 
+        $user->save();
         return response()->json([
-            "id"=> $user->id,
+            "id" => $user->id,
             "user_name" => $user->user_name,
             'role' => $user->role,
             "token" => $user->token
@@ -78,16 +99,19 @@ class EmployeeController extends Controller
     }
 
 
+    /**
+     * Выход из системы
+     */
     public function logout(Request $request)
     {
-        $user = Employee::where('user_name', $request->user_name)->first();
+        $user = Employee::where('id', $request->id)->first();
 
         if ($user->token == null)
             return response()->json(["message" => "Пользователь не авторизован"], 400);
 
         $user->token = null;
         $user->save();
-        return response()->json(["message" =>"Пользователь вышел из системы"], 200);
+        return response()->json(["message" => "Пользователь вышел из системы"], 200);
     }
 
     /**
