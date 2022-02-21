@@ -49,7 +49,7 @@ class DataController extends Controller
     }
 
     /**
-     *
+     * Редактирование данных пользователя 
      */
     public function update(RequestUpdateData $request,$id)
     {

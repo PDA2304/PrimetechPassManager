@@ -15,7 +15,7 @@ class RegistrationRequest extends ApiRequest
                     $fail('Taкое имя уже используется другим пользователем');
                 }
             }],
-            'login' => ["required", "min:3","max:30",function ($attribute, $value, $fail) {
+            'login' => ["required","email",function ($attribute, $value, $fail) {
                 if (Employee::where('login', '=', $value)->first()) {
                     $fail('Taкой логин уже используется другим пользователем');
                 }
