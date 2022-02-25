@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passmanager/bloc/add_data_user/add_data_bloc.dart';
+import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
 import 'package:passmanager/bloc/sing_up/sing_up_bloc.dart';
 import 'package:passmanager/constant/url.dart';
@@ -36,7 +37,9 @@ class AppRouter {
         }
       case home:
         {
-          return MaterialPageRoute(builder: (_) => Home());
+          return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                  create: (context) => HomeCubit(), child: Home()));
         }
       case addData:
         {
@@ -52,8 +55,11 @@ class AppRouter {
         }
       case confirmationCode:
         {
-          var test = settings.arguments as Map<String,Object?>;
-          return MaterialPageRoute(builder: (_) => ConfirmationCode(argument: test,));
+          var test = settings.arguments as Map<String, Object?>;
+          return MaterialPageRoute(
+              builder: (_) => ConfirmationCode(
+                    argument: test,
+                  ));
         }
     }
     return null;

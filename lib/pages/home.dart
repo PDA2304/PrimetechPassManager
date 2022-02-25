@@ -1,63 +1,32 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/constant/url.dart';
 
-class Home extends StatelessWidget {
-  Home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    context.read<HomeCubit>().allData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: blue,
-                width: MediaQuery.of(context).size.width,
-                child: const DrawerHeader(
-                  child: Text(
-                    "Header",
-                    style: TextStyle(color: white),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Column(children: [
-                ListTile(
-                  leading: const Icon(Icons.create, color: blue),
-                  title: Text("Изменение учетных данных"),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.auto_delete, color: blue),
-                  title: const Text("Корзина"),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ]),
-            ),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app_outlined, color: blue),
-              title: const Text("Выход"),
-              onTap: () {
-                Config.clearUserData(); // Пока не будет реализована через bloc
-                Navigator.pushNamedAndRemoveUntil(
-                    context, singIn, (route) => false);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: _drawer(context),
       appBar: AppBar(
         title: const Text("Данные"),
         centerTitle: true,
@@ -65,247 +34,90 @@ class Home extends StatelessWidget {
         actions: _actions(context),
       ),
       floatingActionButton: _floatingActionButton(context),
-      body: ListView(
+      body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+        return state.isSucces
+            ? Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: () => context.read<HomeCubit>().onRefresh(),
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.touch,
+                      PointerDeviceKind.mouse,
+                    },
+                  ),
+                  child: ListView.builder(
+                      itemCount: state.listData.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: InkWell(
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.pushNamed(context, showData,
+                                    arguments: state.listData[index].id);
+                              },
+                              title: Text(state.listData[index].name,
+                                  style: TextStyle(fontSize: 18)),
+                              subtitle: Text(state.listData[index].createdAt),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+              );
+      }),
+    );
+  }
+
+  /// Боковое меню приложения
+  Widget _drawer(BuildContext context) {
+    return Drawer(
+      child: Column(
         children: [
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: blue,
+              width: MediaQuery.of(context).size.width,
+              child: const DrawerHeader(
+                child: Text(
+                  "Header",
+                  style: TextStyle(color: white),
+                ),
               ),
             ),
           ),
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
+          Expanded(
+            flex: 3,
+            child: Column(children: [
+              ListTile(
+                leading: const Icon(Icons.create, color: blue),
+                title: Text("Изменение учетных данных"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
               ),
-            ),
+              ListTile(
+                leading: const Icon(Icons.auto_delete, color: blue),
+                title: const Text("Корзина"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ]),
           ),
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, showData);
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15, left: 15, top: 15, bottom: 15),
-                    child: Row(
-                      children: const [
-                        Text("Название", style: TextStyle(fontSize: 18)),
-                        Expanded(flex: 2, child: SizedBox()),
-                        Text("23.01.2022", style: TextStyle(fontSize: 16)),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(height: 1, color: grey)
-                ],
-              ),
-            ),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app_outlined, color: blue),
+            title: const Text("Выход"),
+            onTap: () {
+              Config.clearUserData(); // Пока не будет реализована через bloc
+              Navigator.pushNamedAndRemoveUntil(
+                  context, singIn, (route) => false);
+            },
           ),
         ],
       ),

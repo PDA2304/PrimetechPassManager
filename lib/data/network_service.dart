@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/data/model/Employee.dart';
@@ -63,19 +64,21 @@ class NetworkService {
   /// [login] Логин пользвоателя
   /// [password] пароль пользователя
   Future<Map<int, dynamic>> confirmationCode(
-      String userName,
-      String login,
-      String password,
-      ) async {
+    String userName,
+    String login,
+    String password,
+  ) async {
     var request = Employee(
       userName: userName,
       login: login,
       password: password,
     ).toJson();
     try {
-      final response = await dio.post("${baseUrl}email_confirmation", data: request);
+      final response =
+          await dio.post("${baseUrl}email_confirmation", data: request);
       return {200: response.data};
     } on DioError catch (e) {
+      print(e.response!.data);
       return {422: Employee().toError(e.response!.data)};
     }
   }
@@ -105,6 +108,21 @@ class NetworkService {
       return {200: response.data};
     } on DioError catch (e) {
       return {422: Data().toError(e.response!.data)};
+    }
+  }
+
+  /// Функция вывода всех данных пользователя
+  /// Выводит список состоящий из трех обхектов
+  /// Дата создания
+  /// Название
+  /// Номер
+  Future<List<IndexData>> allUserData() async {
+    try {
+      final response =
+          await dio.get("${baseUrl}data/indexUser/${Config.userId}");
+      return IndexData().allData(response.data);
+    } on DioError catch (e) {
+      return <IndexData>[];
     }
   }
 }
