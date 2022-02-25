@@ -7,8 +7,8 @@ use App\Http\Helpers\CheckHelpers;
 use App\Http\Requests\RequestCreateData;
 use App\Http\Requests\RequestUpdateData;
 use App\Http\Resources\DataResource;
+use App\Http\Resources\IndexDataResource;
 use App\Models\Data;
-use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
@@ -26,7 +26,7 @@ class DataController extends Controller
      */
     public function indexUser ($id)
     {
-        $result = DataResource::collection(Data::where("user_id","=",$id)->get());
+        $result = IndexDataResource::collection(Data::where("user_id","=",$id)->get());
         return response()->json($result,200);
     }
 
