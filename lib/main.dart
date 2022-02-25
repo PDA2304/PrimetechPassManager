@@ -24,8 +24,11 @@ import 'constant/url.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS)
-    await DesktopWindow.setMinWindowSize(const Size(600, 500));
+  try {
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS)
+      await DesktopWindow.setMinWindowSize(const Size(600, 500));
+  } catch (e) {
+  }
 
   /// Подключаемся к системному файлы для получения данных
   SharedPreferences preferences = await SharedPreferences.getInstance();
