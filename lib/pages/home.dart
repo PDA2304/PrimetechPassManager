@@ -8,6 +8,7 @@ import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/constant/url.dart';
+import 'package:passmanager/widget/FloatingActionMessage.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -37,38 +38,9 @@ class _HomeState extends State<Home> {
       body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
         return state.isSucces
             ? Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: () => context.read<HomeCubit>().onRefresh(),
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.touch,
-                      PointerDeviceKind.mouse,
-                    },
-                  ),
-                  child: ListView.builder(
-                      itemCount: state.listData.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: InkWell(
-                            child: ListTile(
-                              onTap: () {
-                                Navigator.pushNamed(context, showData,
-                                    arguments: state.listData[index].id);
-                              },
-                              title: Text(state.listData[index].name,
-                                  style: TextStyle(fontSize: 18)),
-                              subtitle: Text(state.listData[index].createdAt),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              );
+            : state.listData.isEmpty
+                ? _nullData()
+                : _allData(state);
       }),
     );
   }
@@ -124,6 +96,7 @@ class _HomeState extends State<Home> {
     );
   }
 
+  /// Нижняя кнопка для перехода к окну добавление
   Widget _floatingActionButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
@@ -134,6 +107,8 @@ class _HomeState extends State<Home> {
     );
   }
 
+  /// Элементы действий
+  /// Поиск
   List<Widget> _actions(BuildContext context) {
     return [
       IconButton(
@@ -142,6 +117,88 @@ class _HomeState extends State<Home> {
           },
           icon: const Icon(Icons.search))
     ];
+  }
+
+  /// Функция которая вызывается если нет ниодной записи
+  Widget _nullData() {
+    return RefreshIndicator(
+      onRefresh: () => context.read<HomeCubit>().onRefresh(),
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+          },
+        ),
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                children: <Widget>[
+                  Expanded(child: Container()),
+                  const Text(
+                    "Добавьте первую запись",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold, color: blue),
+                  ),
+                 const Padding(padding: EdgeInsets.all(2.5)),
+                  const Text(
+                    "Пароль и логин от сервера всегда \n будет у вас под ругой",
+                    style: TextStyle(fontSize: 16, color: blue),
+                    textAlign: TextAlign.center,
+                  ),
+                  Expanded(child: Container()),
+                  Container(
+                    padding: EdgeInsets.only(right: 40, bottom: 90),
+                    alignment: AlignmentGeometry.lerp(
+                        Alignment.centerRight, Alignment.centerRight, 0),
+                    child: FloatingActionMessage(color: blue),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  ///Функция вызывается если у пользователя есть какие ли бо данные
+  Widget _allData(HomeState state) {
+    return RefreshIndicator(
+      onRefresh: () => context.read<HomeCubit>().onRefresh(),
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+          },
+        ),
+        child: ListView.builder(
+            itemCount: state.listData.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: InkWell(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, showData,
+                          arguments: state.listData[index].id);
+                    },
+                    title: Text(state.listData[index].name,
+                        style: const TextStyle(fontSize: 18)),
+                    subtitle: Text(state.listData[index].createdAt),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              );
+            }),
+      ),
+    );
   }
 }
 
