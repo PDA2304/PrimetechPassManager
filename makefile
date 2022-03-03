@@ -9,7 +9,7 @@ migrate_fresh:
 	docker exec php-fpm php artisan migrate:fresh
 
 migrate_seed:
-	docker exec php-fpm php artisan migrate:fresh 
+	docker exec php-fpm php artisan migrate:fresh
 	docker exec php-fpm php artisan db:seed
 
 seed:
@@ -29,6 +29,9 @@ create_request:
 
 create_api_model_migration_controller:
 	docker exec php-fpm php artisan make:model $(call args) --api -m
+
+create_web_controller:
+	docker exec php-fpm php artisan make:controller $(call args) --resource
 
 artisan_help:
 	docker exec php-fpm php artisan
