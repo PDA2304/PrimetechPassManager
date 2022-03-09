@@ -2,15 +2,20 @@ part of 'home_cubit.dart';
 
 @immutable
 abstract class HomeState {
-  final bool isSucces;
   final List<IndexData> listData;
 
-  HomeState(this.isSucces, {required this.listData});
+  HomeState({required this.listData});
 }
 
 class HomeInitial extends HomeState {
-  final List<IndexData> listData;
-  final bool isSucces;
-
-  HomeInitial(this.isSucces,this.listData) : super(true,listData:<IndexData>[]);
+  HomeInitial() : super(listData: <IndexData>[]);
 }
+
+/// Состояние Загрузки данных
+class HomeLoad extends HomeState {
+  final List<IndexData> listData;
+
+  HomeLoad(this.listData) : super(listData: <IndexData>[]);
+}
+
+
