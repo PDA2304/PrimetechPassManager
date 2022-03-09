@@ -25,7 +25,7 @@ class _FloatingActionMessageState extends State<FloatingActionMessage> {
         ? Container(
             padding: EdgeInsets.all(7),
             child: const Text(
-              "Нажмите, чтобы \n добавить запись",
+              "\n",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 16),
             ))
