@@ -9,7 +9,7 @@ import 'package:passmanager/data/model/Employee.dart';
 /// [baseUrl] Ссылка к API
 class NetworkService {
   final dio = Dio();
-  String baseUrl = "http://52.170.99.226:8888/api/";
+  String baseUrl = "http://20.102.69.77:8888/api/";
 
   /// Функция регистрации
   /// если возращается 200 регистрация прошла успешно
@@ -123,6 +123,26 @@ class NetworkService {
       return IndexData().allData(response.data);
     } on DioError catch (e) {
       return <IndexData>[];
+    }
+  }
+
+  Future<Data> userData(dataId) async {
+    try {
+      final response = await dio.get("${baseUrl}data/${dataId}");
+      return Data.fromJson(response.data);
+    } on DioError catch (e) {
+      return Data();
+    }
+  }
+
+  Future<Map<int, dynamic>> updatUserData(Data data, int dataId) async {
+    try {
+      final response =
+          await dio.put("${baseUrl}data/${dataId}", data: data.toJsonUpdate());
+      return {200: response.data};
+    } on DioError catch (e) {
+      print(Data().toError(e.response!.data));
+      return {422: Data().toError(e.response!.data)};
     }
   }
 }

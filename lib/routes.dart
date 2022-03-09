@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passmanager/bloc/add_data_user/add_data_bloc.dart';
 import 'package:passmanager/bloc/home/home_cubit.dart';
+import 'package:passmanager/bloc/show_data/show_data_cubit.dart';
 import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
 import 'package:passmanager/bloc/sing_up/sing_up_bloc.dart';
 import 'package:passmanager/constant/url.dart';
+import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/pages/add_data.dart';
 import 'package:passmanager/pages/confirmation_code.dart';
 import 'package:passmanager/pages/home.dart';
@@ -51,7 +53,11 @@ class AppRouter {
         }
       case showData:
         {
-          return MaterialPageRoute(builder: (_) => ShowData());
+          var dataId = settings.arguments as int;
+          return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                  create: (context) => ShowDataCubit(),
+                  child: ShowData(dataId: dataId)));
         }
       case confirmationCode:
         {

@@ -6,10 +6,14 @@ import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/constant/url.dart';
+import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/widget/floating_action_message.dart';
 
+
 class Home extends StatelessWidget {
-   const Home({Key? key}) : super(key: key);
+   Home({Key? key}) : super(key: key);
+
+  List<IndexData> listData = <IndexData>[];
 
   @override
   Widget build(BuildContext context) {
@@ -67,26 +71,28 @@ class Home extends StatelessWidget {
         backgroundColor: blue,
         actions: [
           IconButton(
-              onPressed: () =>
-                  showSearch(context: context, delegate: CustomSearch()),
+              onPressed: () {
+                showSearch(context: context, delegate: CustomSearch());
+              },
               icon: const Icon(Icons.search))
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, addData),
+        onPressed: () {
+          Navigator.pushNamed(context, addData);
+        },
         child: const Icon(Icons.add),
         backgroundColor: blue,
       ),
       body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+        listData = state.listData;
 
-        ///Условие пока дейсвтует состояние HomeLoad Будет показываться CircularProgressIndicator
-        if ((state) is! HomeLoad) {
+        if((state) is! HomeLoad){
           context.read<HomeCubit>().allData();
           return Center(child: CircularProgressIndicator());
         }
 
-        /// Условие если полученные данные не равны Empty то мы их выводит в виде списка
-        if (state.listData.isNotEmpty) {
+        if(state.listData.isNotEmpty) {
           return RefreshIndicator(
             onRefresh: () => context.read<HomeCubit>().onRefresh(),
             child: ScrollConfiguration(
@@ -141,9 +147,7 @@ class Home extends StatelessWidget {
                         "Добавьте первую запись",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: blue),
+                            fontSize: 30, fontWeight: FontWeight.bold, color: blue),
                       ),
                       const Padding(padding: EdgeInsets.all(2.5)),
                       const Text(
@@ -165,6 +169,7 @@ class Home extends StatelessWidget {
             ),
           ),
         );
+
       }),
     );
   }

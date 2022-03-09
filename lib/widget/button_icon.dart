@@ -3,6 +3,7 @@ import 'package:passmanager/constant/colors.dart';
 
 class ButtonIcon extends StatelessWidget {
   final double border;
+  final double? width;
   final Function onTap;
   final String text;
   final Color textColor;
@@ -20,7 +21,8 @@ class ButtonIcon extends StatelessWidget {
       this.textColor = black,
       this.backgroundColor = white,
       this.iconColor = black,
-      this.padding = 5})
+      this.padding = 5,
+      this.width})
       : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class ButtonIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(border),
         onTap: () => onTap(),
         child: Container(
+          width: width,
           padding: EdgeInsets.all(padding),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

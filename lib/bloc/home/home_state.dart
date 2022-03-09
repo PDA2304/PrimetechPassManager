@@ -8,14 +8,12 @@ abstract class HomeState {
 }
 
 class HomeInitial extends HomeState {
-  HomeInitial() : super(listData: <IndexData>[]);
+
+  HomeInitial() : super(listData:<IndexData>[]);
 }
 
-/// Состояние Загрузки данных
-class HomeLoad extends HomeState {
+class HomeLoad extends HomeState{
   final List<IndexData> listData;
 
-  HomeLoad(this.listData) : super(listData: <IndexData>[]);
+  HomeLoad(this.listData) : super(listData:<IndexData>[]);
 }
-
-

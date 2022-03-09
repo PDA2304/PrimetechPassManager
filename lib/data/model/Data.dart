@@ -22,7 +22,7 @@ class Data {
         name = json['name'],
         login = json['login'],
         password = json['password'],
-        description = json['description'];
+        description = json['description'] ?? '';
 
   toError(Map<String, dynamic> json) => {
         "name": json["name"] == null ? null : json["name"][0],
@@ -39,13 +39,20 @@ class Data {
         'password': password,
         'description': description,
       };
+
+  Map<String, dynamic> toJsonUpdate() => {
+        'name': name,
+        'login': login,
+        'password': password,
+        'description': description,
+      };
 }
 
 /// Модель данных для вывода данных пользователя в приложение
 class IndexData {
-  final int? id;
-  final String name;
-  final String createdAt;
+  int? id;
+  String name;
+  String createdAt;
 
   IndexData({this.id, this.name = "", this.createdAt = ""});
 
@@ -54,7 +61,7 @@ class IndexData {
         name = json['name'],
         createdAt = json['created_at'];
 
- List<IndexData> allData(List<dynamic> json) {
+  List<IndexData> allData(List<dynamic> json) {
     List<IndexData> result = <IndexData>[];
     json.forEach((v) {
       result.add(IndexData.fromJson(v));
