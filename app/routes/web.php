@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Web\RegController;
+use App\Http\Controllers\Web\EmployeeController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Route::get('/', [RegController::class, 'reg']);
+Route::get('/login',  [RegController::class, 'login']);
+Route::get('/main', [RegController::class, 'main']);
