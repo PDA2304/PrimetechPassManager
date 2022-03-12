@@ -14,7 +14,7 @@
     <div class="container">
         <div class="auth">
 
-        <form action="" method="POST">
+        <form action="{{ route('regSubmit')}}" method="POST">
             @csrf
             <p>Регистраиця</p>
             @if($errors->any())
