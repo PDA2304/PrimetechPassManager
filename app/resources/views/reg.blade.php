@@ -14,7 +14,7 @@
     <div class="container">
         <div class="auth">
 
-        <form action="{{url('sing_up')}}" method="POST">
+        <form action="" method="POST">
             @csrf
             <p>Регистраиця</p>
             @if($errors->any())
@@ -30,6 +30,7 @@
             <input type="text" placeholder="Логин или почта" name="login">
             <input type="password" placeholder="Пароль" name="password"> <br>
             <button type="submit"> Зарегистрироваться </button>
+            <h3>Уже зарегистрированы? <a href="{{ url('/')}}">Войти</a></h3>
         </form>
         </div>
     </div>

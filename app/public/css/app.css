@@ -28,7 +28,8 @@ body {
     font-size: 30px;
     line-height: 28px;
     text-align: center;
-padding-top: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
    }
    form {
     text-align:center;
@@ -37,7 +38,7 @@ padding-top: 15px;
     }
 input {
 outline: none;
-margin-top: 40px;
+margin-top: 20px;
 padding-left: 20px;
 width: 500px;
 height: 60px;
@@ -57,4 +58,10 @@ button {
 }
 li {
     list-style-type: none;
+}
+h3 {
+    margin-top: 20px;
+}
+a:visited {
+    color: #8CB9FE;
 }

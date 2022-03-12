@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <div class="auth">
-            <form action="{{ route('user.login')}}" method="POST">
+            <form action="" method="POST">
             @csrf
             <p>Авторизация </p>
             @if($errors->any())
@@ -23,9 +23,10 @@
                 </ul>
             </div>
             @endif
-            <input type="text" placeholder="Логин" name="username">
+            <input type="text" placeholder="Логин" name="login">
             <input type="password" placeholder="Пароль" name="password"> <br>
-            <button type="submit"> Зарегистрироваться </button>
+            <button type="submit"> Войти </button>
+            <h3>Вы не зарегистрированы? <a href="{{ url('reg')}}">Регистрация</a></h3>
         </form>
         </div>
     </div>

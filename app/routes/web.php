@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\RegController;
 use App\Http\Controllers\Web\EmployeeController;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,5 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', [RegController::class, 'reg']);
-Route::get('/login',  [RegController::class, 'login']);
-Route::get('/main', [RegController::class, 'main']);
+Route::get('/', [AuthController::class, 'indexLogin']);
+Route::get('/reg',  [AuthController::class, 'indexReg']);
