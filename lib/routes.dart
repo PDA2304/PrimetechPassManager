@@ -9,6 +9,7 @@ import 'package:passmanager/constant/url.dart';
 import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/pages/add_data.dart';
 import 'package:passmanager/pages/confirmation_code.dart';
+import 'package:passmanager/pages/data_info.dart';
 import 'package:passmanager/pages/home.dart';
 import 'package:passmanager/pages/show_data.dart';
 import 'package:passmanager/pages/sing_in.dart';
@@ -67,6 +68,9 @@ class AppRouter {
                     argument: test,
                   ));
         }
+      case dataInfo:{
+        return MaterialPageRoute(builder: (_)=> DataInfo());
+      }
     }
     return null;
   }

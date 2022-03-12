@@ -1,16 +1,16 @@
 /****************************************************************|
-                                                                *|
-                       Data: 26 Dec 2021                        *|
-      ╔═══╗╔══╗╔══╗╔══╗╔╗  ╔╗╔══╗╔╗ ╔╗╔══╗╔═══╗╔═══╗╔═══╗       *|
-      ║╔═╗║║╔╗║║╔═╝║╔═╝║║  ║║║╔╗║║╚═╝║║╔╗║║╔══╝║╔══╝║╔═╗║       *|
-      ║╚═╝║║╚╝║║╚═╗║╚═╗║╚╗╔╝║║╚╝║║╔╗ ║║╚╝║║║╔═╗║╚══╗║╚═╝║       *|
-      ║╔══╝║╔╗║╚═╗║╚═╗║║╔╗╔╗║║╔╗║║║╚╗║║╔╗║║║╚╗║║╔══╝║╔╗╔╝       *|
-      ║║   ║║║║╔═╝║╔═╝║║║╚╝║║║║║║║║ ║║║║║║║╚═╝║║╚══╗║║║║        *|
-      ╚╝   ╚╝╚╝╚══╝╚══╝╚╝  ╚╝╚╝╚╝╚╝ ╚╝╚╝╚╝╚═══╝╚═══╝╚╝╚╝        *|
-                                                                *|
-                           by: PDA                              *|
-                                                                *|
-*****************************************************************/
+ *|
+    Data: 26 Dec 2021                        *|
+    ╔═══╗╔══╗╔══╗╔══╗╔╗  ╔╗╔══╗╔╗ ╔╗╔══╗╔═══╗╔═══╗╔═══╗       *|
+    ║╔═╗║║╔╗║║╔═╝║╔═╝║║  ║║║╔╗║║╚═╝║║╔╗║║╔══╝║╔══╝║╔═╗║       *|
+    ║╚═╝║║╚╝║║╚═╗║╚═╗║╚╗╔╝║║╚╝║║╔╗ ║║╚╝║║║╔═╗║╚══╗║╚═╝║       *|
+    ║╔══╝║╔╗║╚═╗║╚═╗║║╔╗╔╗║║╔╗║║║╚╗║║╔╗║║║╚╗║║╔══╝║╔╗╔╝       *|
+    ║║   ║║║║╔═╝║╔═╝║║║╚╝║║║║║║║║ ║║║║║║║╚═╝║║╚══╗║║║║        *|
+    ╚╝   ╚╝╚╝╚══╝╚══╝╚╝  ╚╝╚╝╚╝╚╝ ╚╝╚╝╚╝╚═══╝╚═══╝╚╝╚╝        *|
+ *|
+    by: PDA                              *|
+ *|
+ *****************************************************************/
 
 import 'dart:io';
 
@@ -25,9 +25,12 @@ import 'constant/url.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS)
-      await DesktopWindow.setMinWindowSize(const Size(600, 500));
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      await DesktopWindow.setMinWindowSize(const Size(500, 700));
+      await DesktopWindow.setMaxWindowSize(const Size(500, 700));
+    }
   } catch (e) {
+    print(e.toString());
   }
 
   /// Подключаемся к системному файлы для получения данных
@@ -64,10 +67,21 @@ class PassManager extends StatelessWidget {
     this.isRegistration = false,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  void WindowsSize() async
+  {
+    try {
+      if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+        await DesktopWindow.setWindowSize( Size(500, 700));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
+  @override
+  Widget build(BuildContext context)  {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    WindowsSize();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

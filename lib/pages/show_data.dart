@@ -32,19 +32,6 @@ class ShowData extends StatelessWidget {
         centerTitle: true,
         backgroundColor: blue,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 7),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => dataInfo()));
-              },
-              child: const Icon(
-                Icons.info_outline,
-                color: white,
-              ),
-            ),
-          ),
           PopupMenuButton(
               tooltip: "Действия",
               itemBuilder: (context) => [
@@ -60,20 +47,6 @@ class ShowData extends StatelessWidget {
                               ),
                             ),
                             Text('Описание')
-                          ],
-                        )),
-                    PopupMenuItem(
-                        value: 0,
-                        child: Row(
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.only(right: 10),
-                              child: Icon(
-                                Icons.group_sharp,
-                                color: blue,
-                              ),
-                            ),
-                            Text('Список пользователей')
                           ],
                         )),
                     PopupMenuItem(
@@ -97,21 +70,6 @@ class ShowData extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(right: 10),
                             child: Icon(
-                              Icons.history,
-                              color: blue,
-                            ),
-                          ),
-                          Text('История действий')
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 3,
-                      child: Row(
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Icon(
                               Icons.delete,
                               color: red,
                             ),
@@ -121,7 +79,19 @@ class ShowData extends StatelessWidget {
                       ),
                     )
                   ],
-              onSelected: (item) {},
+              onSelected: (item) {
+                switch(item)
+                {
+                  case 0:{
+                    Navigator.pushNamed(context,dataInfo);
+                    break;
+                  }
+                  default:{
+                    print(item.toString());
+                    break;
+                  }
+                }
+              },
               icon: const Icon(Icons.more_vert_outlined))
         ],
       ),
