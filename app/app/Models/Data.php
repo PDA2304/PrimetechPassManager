@@ -19,6 +19,7 @@ class Data extends Model
         'login',
         'password',
         'description',
+        'logic_delete',
         'user_id',
     ];
 

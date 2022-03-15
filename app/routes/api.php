@@ -30,7 +30,12 @@ Route::apiResources([
     '/type_action' => TypeActionController::class,
 ]);// Базовые маршруты всех конроллеров
 
+Route::get('/data/indexLogicDelete/{id}',[DataController::class, 'indexLogicDelete']); // Маршрут для вывода удаленных данных пользователя
 Route::get('/data/indexUser/{id}',[DataController::class, 'indexUser']); //Маршрут для вывода данных определенного пользователя
+Route::post('/data/logicDelete/{id}',[DataController::class, 'logicDelete']); // Маршрут для логического удаления данных
+Route::post('/data/logicRestorationDataAll/{id}',[DataController::class, 'logicRestorationDataAll']); // Маршрут для логического востановления данных
+Route::post('/data/logicRestorationDataSelection',[DataController::class, 'logicRestorationDataSelection']); // Маршрут для восстановления выбранных данных
+
 Route::post('/sing_up',[EmployeeController::class, 'sing_up']); // Маршрут для регистрация пользователя
 Route::post('/sing_in',[EmployeeController::class, 'sing_in']); // Маршрут для авторизации пользователя
 Route::post('/email_confirmation',[EmployeeController::class,'email_confirmation'],); // Маршрут для подтверждения почты

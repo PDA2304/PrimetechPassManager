@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\CheckHelpers;
 use App\Http\Requests\RequestCreateData;
 use App\Http\Requests\RequestUpdateData;
+use App\Http\Requests\RestorationRequest;
 use App\Http\Resources\DataResource;
 use App\Http\Resources\IndexDataResource;
 use App\Models\Data;
+use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
@@ -24,10 +26,10 @@ class DataController extends Controller
     /**
      * Выводит данные определенного пользователя
      */
-    public function indexUser ($id)
+    public function indexUser($id)
     {
-        $result = IndexDataResource::collection(Data::where("user_id","=",$id)->get());
-        return response()->json($result,200);
+        $result = IndexDataResource::collection(Data::where("user_id", "=", $id)->where("logic_delete", 0)->get());
+        return response()->json($result, 200);
     }
 
     /**
@@ -36,7 +38,7 @@ class DataController extends Controller
     public function store(RequestCreateData $request)
     {
         $result = Data::create($request->all());
-        return response()->json(new DataResource($result),200);
+        return response()->json(new DataResource($result), 200);
     }
 
     /**
@@ -45,17 +47,60 @@ class DataController extends Controller
     public function show($id)
     {
         $result = CheckHelpers::extension(Data::find($id));
-        return response()->json(new DataResource($result),200);
+        return response()->json(new DataResource($result), 200);
     }
 
     /**
      * Редактирование данных пользователя 
      */
-    public function update(RequestUpdateData $request,$id)
+    public function update(RequestUpdateData $request, $id)
     {
         $result = CheckHelpers::extension(Data::find($id));
         $result->update($request->all());
         return response()->json(new DataResource($result));
+    }
+
+    // Вывод логически удаленных данных
+    public function indexLogicDelete($id)
+    {
+        $result = CheckHelpers::extension(DataResource::collection(Data::all()->where("user_id", "=", $id)->where("logic_delete", 1)));
+        return response()->json($result, 200);
+    }
+
+    // Логическое удаление
+    public function logicDelete($id)
+    {
+        $result = CheckHelpers::extension(Data::find($id));
+        $result->logic_delete = true;
+        $result->save();
+    }
+
+    // Логическое восстановление одних данных
+    public function logicRestorationData($id)
+    {
+        $result = CheckHelpers::extension(Data::find($id));
+        $result->logic_delete = false;
+        $result->save();
+    }
+
+    // Логическое восстановление всех данных
+    public function logicRestorationDataAll($id)
+    {
+        $result =  Data::where("user_id", "=", $id)->where('logic_delete', 1);
+        $result->update(['logic_delete' => 0]);
+        return response()->json($result);
+    }
+
+    // Логическое восстановление выбранных данных
+    public function logicRestorationDataSelection(RestorationRequest $request)
+    {
+        $count = 0;
+        foreach ($request->data_selection as $key => $value) {
+            Data::whereId($value['id'])->update(["logic_delete" => 0]);
+            $count ++;
+        }
+        return response()->json();
+
     }
 
     /**

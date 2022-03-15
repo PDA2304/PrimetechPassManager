@@ -19,6 +19,7 @@ class CreateDataTable extends Migration
             $table->string('login',30);
             $table->string('password',30);
             $table->string('description',250)->nullable();
+            $table->boolean('logic_delete')->default(false);
             $table->integer('user_id');
             $table->timestamps();
 
