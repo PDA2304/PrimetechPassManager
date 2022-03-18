@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,7 @@ import 'package:passmanager/widget/floating_action_message.dart';
 
 
 class Home extends StatelessWidget {
-   Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   List<IndexData> listData = <IndexData>[];
 
@@ -20,33 +22,65 @@ class Home extends StatelessWidget {
     return Scaffold(
       drawer: Drawer(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: blue,
-                width: MediaQuery.of(context).size.width,
-                child: const DrawerHeader(
-                  child: Text(
-                    "Header",
-                    style: TextStyle(color: white),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    foregroundColor: white,
+                    backgroundColor: GenerateColor(),
+                    radius: 30,
+                    child: Center(
+                        child: Text(
+                      Config.userName[0],
+                      style: TextStyle(color: white, fontSize: 22),
+                    )),
                   ),
-                ),
+                  Padding(padding: EdgeInsets.all(3)),
+                  Text(
+                    Config.userName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: black,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "pahomovdaniil02@yandex.ru",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.all(2)),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15),
+              child: Divider(
+                color: grey,
               ),
             ),
             Expanded(
               flex: 3,
               child: Column(children: [
                 ListTile(
-                  leading: const Icon(Icons.create, color: blue),
-                  title: Text("Изменение учетных данных"),
+                  leading: const Icon(Icons.settings, color: blue),
+                  title: Text("Настройки",style: TextStyle(fontSize: 16),),
                   onTap: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.auto_delete, color: blue),
-                  title: const Text("Корзина"),
+                  title: const Text("Корзина",style: TextStyle(fontSize: 16),),
                   onTap: () {
                     Navigator.of(context).pop();
                   },
@@ -55,7 +89,7 @@ class Home extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app_outlined, color: blue),
-              title: const Text("Выход"),
+              title: const Text("Выход",style: TextStyle(fontSize: 16),),
               onTap: () {
                 Config.clearUserData(); // Пока не будет реализована через bloc
                 Navigator.pushNamedAndRemoveUntil(
@@ -87,12 +121,12 @@ class Home extends StatelessWidget {
       body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
         listData = state.listData;
 
-        if((state) is! HomeLoad){
+        if ((state) is! HomeLoad) {
           context.read<HomeCubit>().allData();
           return Center(child: CircularProgressIndicator());
         }
 
-        if(state.listData.isNotEmpty) {
+        if (state.listData.isNotEmpty) {
           return RefreshIndicator(
             onRefresh: () => context.read<HomeCubit>().onRefresh(),
             child: ScrollConfiguration(
@@ -147,7 +181,9 @@ class Home extends StatelessWidget {
                         "Добавьте первую запись",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold, color: blue),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: blue),
                       ),
                       const Padding(padding: EdgeInsets.all(2.5)),
                       const Text(
@@ -169,7 +205,6 @@ class Home extends StatelessWidget {
             ),
           ),
         );
-
       }),
     );
   }
