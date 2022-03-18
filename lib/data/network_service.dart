@@ -9,7 +9,7 @@ import 'package:passmanager/data/model/Employee.dart';
 /// [baseUrl] Ссылка к API
 class NetworkService {
   final dio = Dio();
-  String baseUrl = "http://20.102.69.77:8888/api/";
+  String baseUrl = "http://192.168.157.128:8888/api/";
 
   /// Функция регистрации
   /// если возращается 200 регистрация прошла успешно
@@ -135,7 +135,8 @@ class NetworkService {
     }
   }
 
-  Future<Map<int, dynamic>> updatUserData(Data data, int dataId) async {
+
+  Future<Map<int, dynamic>> updateUserData(Data data, int dataId) async {
     try {
       final response =
           await dio.put("${baseUrl}data/${dataId}", data: data.toJsonUpdate());
@@ -145,4 +146,18 @@ class NetworkService {
       return {422: Data().toError(e.response!.data)};
     }
   }
+
+  /// Функция логического удаления данных
+  /// [dataId] номер данных который будет удален
+  Future logicDeleteData(int dataId) async{
+    try{
+      final response = await dio.post("${baseUrl}data/logicDelete/${dataId}");
+      return response.data;
+    } on DioError catch(e)
+    {
+      print(e.message);
+      return e.response!.data;
+    }
+  }
+
 }

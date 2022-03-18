@@ -18,7 +18,7 @@ class ShowData extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  List<String?> valid = [null, null, null,null];
+  List<String?> valid = [null, null, null, null];
 
   ShowData({Key? key, required this.dataId}) : super(key: key);
 
@@ -80,16 +80,24 @@ class ShowData extends StatelessWidget {
                     )
                   ],
               onSelected: (item) {
-                switch(item)
-                {
-                  case 0:{
-                    Navigator.pushNamed(context,dataInfo);
-                    break;
-                  }
-                  default:{
-                    print(item.toString());
-                    break;
-                  }
+                switch (item) {
+                  case 0:
+                    {
+                      Navigator.pushNamed(context, dataInfo);
+                      break;
+                    }
+                  case 2:
+                    {
+                      print(dataId);
+                      context.read<ShowDataCubit>().logicDeleteData(dataId);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, home, (route) => false);
+                      break;
+                    }
+                  default:
+                    {
+                      break;
+                    }
                 }
               },
               icon: const Icon(Icons.more_vert_outlined))
@@ -97,33 +105,37 @@ class ShowData extends StatelessWidget {
       ),
       body: BlocConsumer<ShowDataCubit, ShowDataState>(
           listener: (context, state) {
-            if(((state) is ShowDataError)||((state) is ShowDataCancel))
-            {
-              print("test");
-              valid[0] = state.nameValidation;
-              valid[1] = state.loginValidation;
-              valid[2] = state.passwordValidation;
-              valid[3] = state.descriptionValidation;
-              if (_formKey.currentState!.validate()) {}
-            }
+        if (((state) is ShowDataError) || ((state) is ShowDataCancel)) {
+          print("test");
+          valid[0] = state.nameValidation;
+          valid[1] = state.loginValidation;
+          valid[2] = state.passwordValidation;
+          valid[3] = state.descriptionValidation;
+          if (_formKey.currentState!.validate()) {}
+        }
 
-
-            if ((state is ShowDataCancel) || ((state) is ShowDataLoad)) {
-              nameController.text = state.name;
-              nameController.selection = TextSelection.fromPosition(TextPosition(offset: nameController.text.length));
-              loginController.text = state.login;
-              loginController.selection = TextSelection.fromPosition(TextPosition(offset: loginController.text.length));
-              passwordController.text = state.password;
-              passwordController.selection = TextSelection.fromPosition(TextPosition(offset: passwordController.text.length));
-              descriptionController.text = state.description!;
-              descriptionController.selection = TextSelection.fromPosition(TextPosition(offset: descriptionController.text.length));
-            }
+        if ((state is ShowDataCancel) || ((state) is ShowDataLoad)) {
+          nameController.text = state.name;
+          nameController.selection = TextSelection.fromPosition(
+              TextPosition(offset: nameController.text.length));
+          loginController.text = state.login;
+          loginController.selection = TextSelection.fromPosition(
+              TextPosition(offset: loginController.text.length));
+          passwordController.text = state.password;
+          passwordController.selection = TextSelection.fromPosition(
+              TextPosition(offset: passwordController.text.length));
+          descriptionController.text = state.description!;
+          descriptionController.selection = TextSelection.fromPosition(
+              TextPosition(offset: descriptionController.text.length));
+        }
 
         if (((state) is ShowDataUpdate)) {
           Navigator.pushNamedAndRemoveUntil(context, home, (route) => false);
         }
       }, builder: (context, state) {
-        if (!(state is ShowDataLoad) && !(state is ShowDataError) && !((state) is ShowDataCancel)) {
+        if (!(state is ShowDataLoad) &&
+            !(state is ShowDataError) &&
+            !((state) is ShowDataCancel)) {
           return Center(
             child: CircularProgressIndicator(),
           );

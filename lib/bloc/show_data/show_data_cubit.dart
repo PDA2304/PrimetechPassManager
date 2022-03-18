@@ -11,6 +11,8 @@ class ShowDataCubit extends Cubit<ShowDataState> {
   ShowDataCubit() : super(ShowDataInitial());
   var network = NetworkService();
 
+  void logicDeleteData(int dataId) => network.logicDeleteData(dataId);
+
   void loadDataUser(int dataId) => network.userData(dataId).then((value) {
         emit(ShowDataLoad(
           value.name,
@@ -31,7 +33,7 @@ class ShowDataCubit extends Cubit<ShowDataState> {
 
   void onUpdate(Data data, int userId, int dataId) {
 
-    network.updatUserData(data, dataId).then((value) {
+    network.updateUserData(data, dataId).then((value) {
       if (value.containsKey(200)) {
         emit(ShowDataUpdate(
           data.name,
