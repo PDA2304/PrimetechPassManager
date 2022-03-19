@@ -26,9 +26,9 @@
                 </ul>
             </div>
             @endif
-            <input type="text" placeholder="Имя" name="user_name">
-            <input type="text" placeholder="Логин или почта" name="login">
-            <input type="password" placeholder="Пароль" name="password"> <br>
+            <input type="text" class="place" placeholder="Имя" name="user_name">
+            <input type="text" class="place" placeholder="Логин или почта" name="login">
+            <input type="password" class="place" placeholder="Пароль" name="password"> <br>
             <button type="submit"> Зарегистрироваться </button>
             <h3>Уже зарегистрированы? <a href="{{ url('/')}}">Войти</a></h3>
         </form>
