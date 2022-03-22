@@ -1,4 +1,6 @@
+<?php
 
+?>
 <!doctype html>
 <html lang="ru">
   <head>
@@ -79,8 +81,8 @@
 <body>
 <p> </p>
 <div class="container">
-  <h2>Запрос входящих вызовов длительностью меньше минуты</h2>  <br>
-  <button type="button" class="btn btn-outline-primary">Добавить</button> <p> </p>
+  <h2>{{$details}}</h2>  <br>
+  <button type="button" class="btn btn-outline-primary"><a href="add_user_data.php">Добавить</a></button> <p> </p>
 
   <table class="table">
   <thead>
@@ -90,13 +92,7 @@
         <th></th>
       </tr>
     </thead>
-    @foreach ($data as $elem)
-    <tbody id="myTable">
-        <td> {{$elem->name}} </td>
-        <td> {{$elem->description}} </td>
-        <td><button>Удалить</button></td>
- </tbody>
-    @endforeach
+
   </table>
 </div>
 
