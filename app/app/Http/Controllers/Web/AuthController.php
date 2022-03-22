@@ -22,6 +22,9 @@ class AuthController extends Controller
 
     public function indexReg()
     {
+        if (Auth::check()) {
+            return redirect("main");
+        }
         return view('reg');
     }
 
@@ -33,16 +36,15 @@ class AuthController extends Controller
             "token" => Str::random(100),
             'password' => Hash::make(trim($request->password)),
         ]);
-        if ($user) {
-            auth('web')->login($user);
-            $request->session()->push('id', $user->id);
-            $data = Data::where('user_id', $user->id)->get();
-            return redirect(view('main', ['data' => $data]));
-        }
+        Auth::login($user);
+        return redirect("main");
     }
 
     public function indexLogin()
     {
+        if (Auth::check()) {
+            return redirect("main");
+        }
         return view('login');
     }
 
@@ -54,14 +56,19 @@ class AuthController extends Controller
         } else {
             $user->token = Str::random(100);
             $user->save();
-            $request->session()->push('id', $user->id);
-            $data = Data::where('user_id', $user->id)->get();
-            return view('main', ['data' => $data]);
+            Auth::login($user);
+            return redirect('main');
         }
     }
 
     public function indexMain()
     {
-        return view('main');
+        $result = Data::where("user_id", "=", auth()->user()->id)->get();
+        return view('main', ['data' => $result]);
+    }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect("/");
     }
 }

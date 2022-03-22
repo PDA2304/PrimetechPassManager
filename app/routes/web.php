@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', [AuthController::class, 'indexLogin']);
-Route::get('/reg',  [AuthController::class, 'indexReg']);
+Route::get('/', [AuthController::class, 'indexLogin'])->name("login");
+Route::get('/reg',  [AuthController::class, 'indexReg'])->name("reg");
 Route::post('/reg/submit/',  [AuthController::class, 'submitReg'])->name('regSubmit');
 Route::post('/login/submit/',  [AuthController::class, 'submitLogin'])->name('loginSubmit');
-Route::get('/main',  [AuthController::class, 'indexMain'])->name('main');
+Route::get('/logout', [AuthController::class, 'logout'])->middleware("auth")->name('main');
+Route::get('/main',  [AuthController::class, 'indexMain'])->middleware("auth")->name('main');
