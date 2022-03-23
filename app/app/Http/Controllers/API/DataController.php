@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\CheckHelpers;
 use App\Http\Requests\RequestCreateData;
 use App\Http\Requests\RequestUpdateData;
-use App\Http\Requests\RestorationRequest;
+use App\Http\Requests\DataSelectRequest;
 use App\Http\Resources\DataResource;
 use App\Http\Resources\IndexDataResource;
 use App\Models\Data;
@@ -20,7 +20,7 @@ class DataController extends Controller
     public function index()
     {
         $result = DataResource::collection(Data::all());
-        return response()->json($result,200);
+        return response()->json($result, 200);
     }
 
     /**
@@ -63,7 +63,7 @@ class DataController extends Controller
     // Вывод логически удаленных данных
     public function indexLogicDelete($id)
     {
-        $result = CheckHelpers::extension(DataResource::collection(Data::all()->where("user_id", "=", $id)->where("logic_delete", 1)));
+        $result = CheckHelpers::extension(IndexDataResource::collection(Data::all()->where("user_id", "=", $id)->where("logic_delete", 1)));
         return response()->json($result, 200);
     }
 
@@ -92,15 +92,34 @@ class DataController extends Controller
     }
 
     // Логическое восстановление выбранных данных
-    public function logicRestorationDataSelection(RestorationRequest $request)
+    public function logicRestorationDataSelection(DataSelectRequest $request)
     {
         $count = 0;
-        foreach ($request->data_selection as $key => $value) {
-            Data::whereId($value['id'])->update(["logic_delete" => 0]);
-            $count ++;
+        foreach ($request->data_selection as $key) {
+            Data::whereId($key)->update(["logic_delete" => 0]);
         }
         return response()->json();
+    }
 
+    /**
+     * Удаление всех данных в корзине
+     */
+    public function destroyDataAll($id)
+    {
+        $result =  Data::where("user_id", "=", $id)->where('logic_delete', 1);
+        $result->delete();
+        return response()->json($result);
+    }
+
+    /**
+     * Удаление выбранных данных пользователя
+     */
+    public function destroyDataSelect(DataSelectRequest $request, $id)
+    {
+        foreach ($request->data_selection as $key) {
+            Data::whereId($key)->delete();
+        }
+        return response()->json();
     }
 
     /**
