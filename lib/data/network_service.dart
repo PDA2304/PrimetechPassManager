@@ -9,7 +9,7 @@ import 'package:passmanager/data/model/Trash.dart';
 /// [baseUrl] Ссылка к API
 class NetworkService {
   final dio = Dio();
-  String baseUrl = "http://192.168.157.128:8888/api/";
+  String baseUrl = "http://192.168.0.92:8888/api/";
 
   /// Функция регистрации
   /// если возращается 200 регистрация прошла успешно
