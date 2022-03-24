@@ -36,7 +36,7 @@ Route::post('/data/logicDelete/{id}',[DataController::class, 'logicDelete']); //
 Route::post('/data/logicRestorationDataAll/{id}',[DataController::class, 'logicRestorationDataAll']); // Маршрут для логического востановления данных
 Route::post('/data/logicRestorationDataSelection',[DataController::class, 'logicRestorationDataSelection']); // Маршрут для восстановления выбранных данных
 Route::delete('/data/destroyDataAll/{id}',[DataController::class,'destroyDataAll']); // Маршрут для удаления всей корзины
-Route::delete('/data/destroyDataSelect',[DataController::class,'destroyDataSelect']); // Маршрут для удаления выбранных данных в корзине
+Route::delete('/data/destroyDataSelect/{id}',[DataController::class,'destroyDataSelect']); // Маршрут для удаления выбранных данных в корзине
 
 Route::post('/sing_up',[EmployeeController::class, 'sing_up']); // Маршрут для регистрация пользователя
 Route::post('/sing_in',[EmployeeController::class, 'sing_in']); // Маршрут для авторизации пользователя
