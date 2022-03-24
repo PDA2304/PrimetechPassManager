@@ -114,7 +114,7 @@ class DataController extends Controller
     /**
      * Удаление выбранных данных пользователя
      */
-    public function destroyDataSelect(DataSelectRequest $request, $id)
+    public function destroyDataSelect(DataSelectRequest $request)
     {
         foreach ($request->data_selection as $key) {
             Data::whereId($key)->delete();
