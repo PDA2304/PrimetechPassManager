@@ -6,3 +6,4 @@ const String addData = '/add_data';
 const String showData = '/show_data';
 const String confirmationCode = '/confirmation_code';
 const String dataInfo = '/datt_info';
+const String trash = '/trash';

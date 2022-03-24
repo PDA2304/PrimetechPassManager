@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:encrypt/encrypt.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/data/model/Employee.dart';
+import 'package:passmanager/data/model/Trash.dart';
 
 /// Класс отвечающий за запросы к API
 /// [dio] Класс который работыет с API
@@ -135,7 +135,6 @@ class NetworkService {
     }
   }
 
-
   Future<Map<int, dynamic>> updateUserData(Data data, int dataId) async {
     try {
       final response =
@@ -149,15 +148,60 @@ class NetworkService {
 
   /// Функция логического удаления данных
   /// [dataId] номер данных который будет удален
-  Future logicDeleteData(int dataId) async{
-    try{
+  Future logicDeleteData(int dataId) async {
+    try {
       final response = await dio.post("${baseUrl}data/logicDelete/${dataId}");
       return response.data;
-    } on DioError catch(e)
-    {
+    } on DioError catch (e) {
       print(e.message);
       return e.response!.data;
     }
   }
 
+  /// Функция которая возразает корзину пользователя
+  Future<List<Trash>> indexLogicDeleteData() async {
+    try {
+      final response =
+          await dio.get("${baseUrl}data/indexLogicDelete/${Config.userId}");
+      return Trash().allData(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      return e.response!.data;
+    }
+  }
+
+  Future logicRestorationDataAll() async {
+    try {
+      final response = await dio
+          .post("${baseUrl}data/logicRestorationDataAll/${Config.userId}");
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
+
+  Future logicRestorationDataSelection(List<int> list) async {
+    try {
+      var formData = FormData.fromMap({"data_selection[]": list});
+      final response = await dio
+          .post("${baseUrl}data/logicRestorationDataSelection", data: formData);
+      print(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      print(e.response!.data);
+    }
+  }
+
+  Future  deleteDataSelection(List<int> list) async{
+    try{
+      var formData = FormData.fromMap({"data_selection[]": list});
+      print(formData.fields);
+      final response = await dio
+          .delete("${baseUrl}data/destroyDataSelect/${Config.userId}", data: formData);
+      print(response.data);
+    }on DioError catch(e)
+    {
+      print(e.message);
+      print(e.response!.data);
+    }
+  }
 }

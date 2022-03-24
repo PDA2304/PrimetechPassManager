@@ -63,3 +63,7 @@ class ShowDataUpdate extends ShowDataState{
       this.name, this.login, this.password, this.description,)
       : super();
 }
+
+class ShowDataDelete extends ShowDataState{
+
+}

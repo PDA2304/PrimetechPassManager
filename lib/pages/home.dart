@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +6,15 @@ import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/constant/url.dart';
-import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/widget/floating_action_message.dart';
-
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
 
-  List<IndexData> listData = <IndexData>[];
-
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<HomeCubit>(context).allData();
+
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -26,7 +22,8 @@ class Home extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 15, top: 10),
+              padding: EdgeInsets.only(
+                  left: 15, top: MediaQuery.of(context).padding.top + 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,23 +70,32 @@ class Home extends StatelessWidget {
               child: Column(children: [
                 ListTile(
                   leading: const Icon(Icons.settings, color: blue),
-                  title: Text("Настройки",style: TextStyle(fontSize: 16),),
+                  title: Text(
+                    "Настройки",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   onTap: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.auto_delete, color: blue),
-                  title: const Text("Корзина",style: TextStyle(fontSize: 16),),
+                  title: const Text(
+                    "Корзина",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Navigator.popAndPushNamed(context, trash);
                   },
                 ),
               ]),
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app_outlined, color: blue),
-              title: const Text("Выход",style: TextStyle(fontSize: 16),),
+              title: const Text(
+                "Выход",
+                style: TextStyle(fontSize: 16),
+              ),
               onTap: () {
                 Config.clearUserData(); // Пока не будет реализована через bloc
                 Navigator.pushNamedAndRemoveUntil(
@@ -119,10 +125,7 @@ class Home extends StatelessWidget {
         backgroundColor: blue,
       ),
       body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-        listData = state.listData;
-
         if ((state) is! HomeLoad) {
-          context.read<HomeCubit>().allData();
           return Center(child: CircularProgressIndicator());
         }
 

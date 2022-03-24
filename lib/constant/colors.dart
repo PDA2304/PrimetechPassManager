@@ -8,6 +8,7 @@ const red = Color(0xFFD80000);
 const orange = Color(0xFFD86800);
 const black = Color(0xFF000000);
 const white = Color(0xFFFFFFFF);
+const green = Color(0xFF329A4B);
 const grey = Colors.grey;
 
 /// Список цветов которые будут выдаваться пользователю
@@ -25,13 +26,11 @@ const List<Color> colorAvatar = [
 ];
 
 /// Функция выдачи увета в зависимости от id пользователя
-Color GenerateColor()
-{
+Color GenerateColor() {
   int colorIndex = Config.userId - ((Config.userId / 10).ceil() * 10);
   print(colorIndex);
   return colorAvatar[colorIndex.abs()];
 }
-
 
 /*
   Класс отвечающий за перевод цвета из Colors в MaterialColor

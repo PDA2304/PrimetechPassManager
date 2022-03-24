@@ -11,8 +11,17 @@ class HomeCubit extends Cubit<HomeState> {
   var network = NetworkService();
 
   /// Выводид все данные пользователя
-  void allData() =>
-      network.allUserData().then((value) => emit(HomeLoad(value)));
+  void allData() {
+    network.allUserData().then((value) => emit(HomeLoad(value)));
+  }
+
+  /// Функция которая получает восстановленные данные из корзины и снова добаляет
+  /// в основной список данных пользователя
+  void restorationData(List<IndexData> indexDataList){
+    final list = (state as HomeLoad).listData;
+    list.addAll(indexDataList);
+    emit(HomeLoad(list));
+  }
 
   /// Обновляет данные пользователя если срабатывает событие
   /// onRefresh у элемента RefreshIndicator

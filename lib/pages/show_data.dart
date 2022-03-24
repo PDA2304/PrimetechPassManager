@@ -5,8 +5,6 @@ import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/constant/url.dart';
 import 'package:passmanager/data/model/Data.dart';
-import 'package:passmanager/data/network_service.dart';
-import 'package:passmanager/pages/data_info.dart';
 import 'package:passmanager/widget/button_icon.dart';
 import 'package:passmanager/widget/custom_text_filed.dart';
 import 'package:passmanager/widget/password_field.dart';
@@ -90,8 +88,6 @@ class ShowData extends StatelessWidget {
                     {
                       print(dataId);
                       context.read<ShowDataCubit>().logicDeleteData(dataId);
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, home, (route) => false);
                       break;
                     }
                   default:
@@ -105,6 +101,11 @@ class ShowData extends StatelessWidget {
       ),
       body: BlocConsumer<ShowDataCubit, ShowDataState>(
           listener: (context, state) {
+        if ((state) is ShowDataDelete)
+          Future.delayed(Duration(milliseconds: 500), () {
+            Navigator.pushNamedAndRemoveUntil(context, home, (route) => false);
+          });
+
         if (((state) is ShowDataError) || ((state) is ShowDataCancel)) {
           print("test");
           valid[0] = state.nameValidation;

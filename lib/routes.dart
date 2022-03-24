@@ -5,8 +5,8 @@ import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/bloc/show_data/show_data_cubit.dart';
 import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
 import 'package:passmanager/bloc/sing_up/sing_up_bloc.dart';
+import 'package:passmanager/bloc/trash/trash_cubit.dart';
 import 'package:passmanager/constant/url.dart';
-import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/pages/add_data.dart';
 import 'package:passmanager/pages/confirmation_code.dart';
 import 'package:passmanager/pages/data_info.dart';
@@ -14,11 +14,14 @@ import 'package:passmanager/pages/home.dart';
 import 'package:passmanager/pages/show_data.dart';
 import 'package:passmanager/pages/sing_in.dart';
 import 'package:passmanager/pages/sing_up.dart';
+import 'package:passmanager/pages/trash.dart';
 
 /**
  * Класс отвчающией за навигацию в приложении
  */
 class AppRouter {
+  HomeCubit homeCubit = HomeCubit();
+
   /// Функция которая возращает верску экрана по заданному пути
   Route<dynamic>? generateRouter(RouteSettings settings) {
     switch (settings.name) {
@@ -41,8 +44,8 @@ class AppRouter {
       case home:
         {
           return MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                  create: (context) => HomeCubit(), child: Home()));
+              builder: (_) =>
+                  BlocProvider.value(value: homeCubit, child: Home()));
         }
       case addData:
         {
@@ -68,9 +71,18 @@ class AppRouter {
                     argument: test,
                   ));
         }
-      case dataInfo:{
-        return MaterialPageRoute(builder: (_)=> DataInfo());
-      }
+      case dataInfo:
+        {
+          return MaterialPageRoute(builder: (_) => DataInfo());
+        }
+      case trash:
+        {
+          return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                    create: (context) => TrashCubit(homeCubit),
+                    child: TrashPages(),
+                  ));
+        }
     }
     return null;
   }

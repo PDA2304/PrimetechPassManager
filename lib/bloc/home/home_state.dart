@@ -8,7 +8,6 @@ abstract class HomeState {
 }
 
 class HomeInitial extends HomeState {
-
   HomeInitial() : super(listData:<IndexData>[]);
 }
 

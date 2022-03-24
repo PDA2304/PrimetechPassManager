@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
-import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/data/network_service.dart';
 
@@ -11,7 +10,7 @@ class ShowDataCubit extends Cubit<ShowDataState> {
   ShowDataCubit() : super(ShowDataInitial());
   var network = NetworkService();
 
-  void logicDeleteData(int dataId) => network.logicDeleteData(dataId);
+  void logicDeleteData(int dataId) => network.logicDeleteData(dataId).then((value) => emit(ShowDataDelete()));
 
   void loadDataUser(int dataId) => network.userData(dataId).then((value) {
         emit(ShowDataLoad(
