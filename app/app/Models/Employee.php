@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 /**
  * Модель для таблицы Employee
  */
-class Employee extends Model
+class Employee extends Authenticatable
 {
     use HasFactory;
 
@@ -28,5 +29,4 @@ class Employee extends Model
         'created_at',
         'updated_at',
     ];
-
 }

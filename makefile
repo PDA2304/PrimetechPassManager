@@ -11,7 +11,7 @@ migrate_fresh:
 
 # Проводит миграцию, которая пересоздает все таблицы и создает начальный данные в бдд
 migrate_seed:
-	docker exec php-fpm php artisan migrate:fresh 
+	docker exec php-fpm php artisan migrate:fresh
 	docker exec php-fpm php artisan db:seed
 
 # Создание начальных данных в бд
@@ -39,6 +39,9 @@ create_api_model_migration_controller:
 	docker exec php-fpm php artisan make:model $(call args) --api -m
 
 # Выодит шпаргалку по artisan
+create_web_controller:
+	docker exec php-fpm php artisan make:controller $(call args) --resource
+
 artisan_help:
 	docker exec php-fpm php artisan
 
