@@ -15,10 +15,11 @@ class CreateDataTable extends Migration
     {
         Schema::create('data', function (Blueprint $table) {
             $table->id();
-            $table->string('name',30);
-            $table->string('login',30);
-            $table->string('password',30);
-            $table->string('description',250)->nullable();
+            $table->string('name', 30);
+            $table->string('login', 30);
+            $table->string('password', 30);
+            $table->boolean('logic_delete')->default(false);
+            $table->string('description', 250)->nullable();
             $table->integer('user_id');
             $table->timestamps();
 

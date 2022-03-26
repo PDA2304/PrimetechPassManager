@@ -18,6 +18,7 @@ class Data extends Model
         'name',
         'login',
         'password',
+        'logic_delete',
         'description',
         'user_id',
     ];
@@ -29,6 +30,6 @@ class Data extends Model
 
     public function employee()
     {
-        return $this->HasOne(Employee::class,'id', 'user_id');
+        return $this->HasOne(Employee::class, 'id', 'user_id');
     }
 }

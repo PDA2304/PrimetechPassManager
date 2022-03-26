@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\WebRegistrationRequest;
 use App\Models\Data;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use phpDocumentor\Reflection\DocBlock\Tag;
 
 class DataController extends Controller
 {
@@ -16,9 +20,9 @@ class DataController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function createData()
     {
-        //
+        return view("details");
     }
 
     /**
@@ -26,9 +30,18 @@ class DataController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function addUserData(Request $request)
     {
-        //
+
+        $user = Data::create([
+            'name' => trim($request->name),
+            'login' => trim($request->login),
+            'password' => trim($request->password),
+            "description" => trim($request->description),
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return redirect('main');
     }
 
     /**
@@ -37,15 +50,12 @@ class DataController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function dataMain(Request $request)
+    public function deleteUserData($id)
     {
-        $user_id = Employee::user()->id;
-        $data['data'] = Data::where('user_id', '=', $user_id)->get();
-        if (count($data) > 0) {
-            return view('main', compact('data'));
-        } else {
-            return view('main');
-        }
+        $user = Data::find($id);
+        $user->logic_delete = true;
+        $user->save();
+        return redirect()->route('main');
     }
 
     /**
@@ -54,14 +64,24 @@ class DataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+
+    public function updateData($id, Request $request)
     {
-        $data['data'] = DB::table('Data')->get();
-        if (count($data) > 0) {
-            return view('main', $data);
-        } else {
-            return view('main');
-        }
+        $user = Data::find($id);
+
+        return view("update", ['user' => $user]);
+    }
+
+    public function updateUserData($id, Request $request)
+    {
+        $user = Data::find($id)->update([
+            'name' => trim($request->name),
+            'login' => trim($request->login),
+            'password' => trim($request->password),
+            "description" => trim($request->description),
+        ]);
+        return redirect(route('main', $user));
+        //  return view('main', $id);
     }
 
     /**

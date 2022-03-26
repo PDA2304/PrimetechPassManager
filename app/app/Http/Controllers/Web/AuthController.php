@@ -16,9 +16,6 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function show(Request $request, $id)
-    {
-    }
 
     public function indexReg()
     {
@@ -63,7 +60,8 @@ class AuthController extends Controller
 
     public function indexMain()
     {
-        $result = Data::where("user_id", "=", auth()->user()->id)->get();
+        $result = Data::where("user_id", "=", auth()->user()->id)->where('logic_delete', "=", 0)->get();
+
         return view('main', ['data' => $result]);
     }
     public function logout()
