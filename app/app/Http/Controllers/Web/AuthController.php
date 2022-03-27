@@ -7,10 +7,7 @@ use App\Http\Requests\WebAutorizationRequest;
 use App\Http\Requests\WebRegistrationRequest;
 use App\Models\Data;
 use App\Models\Employee;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -52,7 +49,6 @@ class AuthController extends Controller
             return redirect('/')->withErrors(['message' => 'Пароль неверный.']);
         } else {
             $user->token = Str::random(100);
-            $user->save();
             Auth::login($user);
             return redirect('main');
         }
@@ -62,7 +58,7 @@ class AuthController extends Controller
     {
         $result = Data::where("user_id", "=", auth()->user()->id)->where('logic_delete', "=", 0)->get();
 
-        return view('main', ['data' => $result]);
+        return view('main', ['data' => $result, 'user' => auth()->user()]);
     }
     public function logout()
     {

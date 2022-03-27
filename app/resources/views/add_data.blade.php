@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../../css/app.css" type="text/css" rel="stylesheet">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title> Авторизация </title>
-</head>
-<body>
+<a data-toggle="modal" href="modal-id"> Trigger Modal </a>
     <div class="container">
         <div class="auth">
             <form action="{{route('updateUserData', $user->id)}}" method="POST">
