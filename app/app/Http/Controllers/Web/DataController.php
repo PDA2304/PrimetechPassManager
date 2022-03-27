@@ -78,7 +78,7 @@ class DataController extends Controller
             'name' => trim($request->name),
             'login' => trim($request->login),
             'password' => trim($request->password),
-            "description" => trim($request->description),
+            'description' => $request->description,
         ]);
         return redirect(route('main', $user));
         //  return view('main', $id);
@@ -90,9 +90,11 @@ class DataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function indexBin()
     {
-        //
+        $result = Data::where("user_id", "=", auth()->user()->id)->where('logic_delete', "=", 1)->get();
+
+        return view('bin', ['data' => $result, 'user' => auth()->user()]);
     }
 
     /**

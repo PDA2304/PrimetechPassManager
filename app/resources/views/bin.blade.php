@@ -55,8 +55,8 @@
   <body>
 
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark" >
-    <div class="container">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark" style='padding: 1% 23em 1% 23em'>
+    <div class="container-fluid">
       <a class="navbar-brand" href="#">Добро пожаловать, {{ $user->login }}</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -64,11 +64,11 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" style="padding-left: 2em" href="{{route('indexBin')}}">Корзина</a>
+            <a class="nav-link active" style="padding-left: 2em" href="{{route('main')}}"> Главная </a>
           </li>
         </ul>
         <form class="d-flex">
-            <a href="{{route('logout')}}"> <button type="button" class="btn btn-secondary">Выход</button> </a>
+           <a href="{{route('logout')}}"> <button type="button" class="btn btn-secondary">Выход</button> </a>
         </form>
       </div>
     </div>
@@ -79,10 +79,7 @@
 <body>
 <p> </p>
 <div class="container">
-  {{-- <h2>Пользователь</h2>  <br> --}}
-  <a href="{{route('createData')}}"><button type="button" class="btn btn-outline-primary">Добавить</button> </a><p> </p>
-  <div class="table-responsive">
-  <table class="table ">
+  <table class="table">
     <thead>
         <tr>
           <th>Ресурс</th>
@@ -96,17 +93,16 @@
         </tr>
       </thead>
       <tbody id="myTable">
-      @foreach ($data as $elem)
-        <tr>
+        @foreach ($data as $elem)
+          <tr>
           <td> {{$elem->name}} </td>
-          <td colspan="5" class="col-4"> {{$elem->description}} </td>
-          <td><a href="{{route('deleteUserData', $elem->id)}}"><button>Удалить</button></a> </td>
-          <td><a href="{{route('update', $elem->id)}}"><button>Редактировать</button></a> </td>
+          <td colspan="5"> {{$elem->description}} </td>
+          <td ><a href="{{route('physicDelete', $elem->id)}}"><button>Удалить</button></a> </td>
+          <td><a href="{{route('physicRestore', $elem->id)}}"><button>Восстановить</button></a> </td>
         </tr>
-      @endforeach
-    </tbody>
+        @endforeach
+      </tbody>
     </table>
-  </div>
 </div>
 </body>
 </html>
