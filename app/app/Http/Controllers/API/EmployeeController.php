@@ -22,7 +22,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $result = Employee::all();
+        return response()->json($result, 200);
     }
 
     /**
@@ -47,6 +48,15 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function EmployeeSearch($test)
+    {
+        if (trim($test) == '')
+            return response()->json('Пользователь ничего не ввел', 422);
+        $searchTerm = $test . '%';
+        $result = Employee::where('login', 'ilike', $searchTerm)->get();
+        return response()->json($result, 200);
     }
 
     /**

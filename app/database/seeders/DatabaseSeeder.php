@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\TypeAction;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,10 +21,11 @@ class DatabaseSeeder extends Seeder
 
         $typeActionName = array(
             'Добавление',
-            'Удаленние',
-            'Изменнение пароля',
-            'Изменнение логина',
-            'Изменнение названия данных'
+            'Данные были перемещены в корзину',
+            'Данные были восстановлены',
+            'Данные были изменены',
+            'Доступ к данным был увеличен',
+            'Доступ к данным был уменьшен',
         );
 
         foreach ($typeActionName as $key) {
@@ -42,5 +44,58 @@ class DatabaseSeeder extends Seeder
             'login' => 'admin',
             'password' => Hash::make('admin'),
         ]);
+
+        DB::statement('
+                CREATE OR REPLACE FUNCTION history()
+                    RETURNS trigger
+                    LANGUAGE plpgsql
+                    COST 100
+                    VOLATILE NOT LEAKPROOF
+                AS $$
+                declare
+                begin
+                    if(TG_OP = \'INSERT\') then
+                    INSERT INTO public.actions(
+                        action_date, user_id, type_action_id,data_id)
+                        VALUES (clock_timestamp(), NEW.user_id, 1,NEW.id);
+                        return NEW;
+                    end if;
+                    if(TG_OP = \'UPDATE\') then
+                        if(NEW.name != OLD.name AND NEW.login != OLD.login AND NEW.password != OLD.password AND NEW.description != OLD.description)
+                        then 
+                            INSERT INTO public.actions(
+                            action_date, user_id, type_action_id,data_id)
+                            VALUES (clock_timestamp(), OLD.user_id, 4,OLD.id);
+                        return NEW;
+                        end if;
+                            
+                        if(NEW.logic_delete = false) 
+                        then 
+                            INSERT INTO public.actions(
+                            action_date, user_id, type_action_id,data_id)
+                            VALUES (clock_timestamp(), OLD.user_id, 3,OLD.id);
+                        end if;
+                        
+                        if(NEW.logic_delete = true) 
+                        then 
+                            INSERT INTO public.actions(
+                            action_date, user_id, type_action_id,data_id)
+                            VALUES (clock_timestamp(), OLD.user_id, 2,OLD.id);
+                        end if;
+                        
+                        RETURN NULL;
+                    end if;
+                    
+                end;
+                $$;
+        ');
+
+        DB::statement('  
+            CREATE TRIGGER history
+            After INSERT OR DELETE OR UPDATE 
+            ON data
+            FOR EACH ROW
+            EXECUTE FUNCTION history();
+        ');
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ActionDataShowResources;
+use App\Models\Action;
 use Illuminate\Http\Request;
 
 
@@ -24,6 +26,18 @@ class ActionController extends Controller
      */
     public function show($id)
     {
+
+    }
+
+    /**
+     * Вывод истории по определенным данным
+     */
+    public function dataShow($id)
+    {
+        $result = Action::where("data_id", "=", $id)->get();
+
+        
+        return response()->json(ActionDataShowResources::collection($result), 200);
     }
 
     /**
@@ -31,7 +45,6 @@ class ActionController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -39,6 +52,5 @@ class ActionController extends Controller
      */
     public function destroy($id)
     {
-
     }
 }

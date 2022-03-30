@@ -16,6 +16,7 @@ class Action extends Model
         'id',
         'action_date',
         'user_id',
+        'data_id',
         'type_action_id',
     ];
 
@@ -23,4 +24,13 @@ class Action extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class,'user_id','id');
+    }
+
+    public function action(){
+        return $this->belongsTo(TypeAction::class,'type_action_id','id');
+    }
 }
