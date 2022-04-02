@@ -50,6 +50,25 @@ class EmployeeController extends Controller
         //
     }
 
+    public function EmploeeNameUpdate(){
+        
+    }
+
+    public function EmploeeLoginUpdate()
+    {
+
+    }
+
+    public function EmploeePasswordUpdate()
+    {
+
+    } 
+
+    public function EmployeePasswordReset()
+    {
+
+    }
+
     public function EmployeeSearch($test)
     {
         if (trim($test) == '')
