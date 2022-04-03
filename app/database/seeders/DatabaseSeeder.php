@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
                         return NEW;
                     end if;
                     if(TG_OP = \'UPDATE\') then
-                        if(NEW.name != OLD.name AND NEW.login != OLD.login AND NEW.password != OLD.password AND NEW.description != OLD.description)
+                        if(NEW.name != OLD.name OR NEW.login != OLD.login OR NEW.password != OLD.password OR NEW.description != OLD.description)
                         then 
                             INSERT INTO public.actions(
                             action_date, user_id, type_action_id,data_id)
@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
 
         DB::statement('  
             CREATE TRIGGER history
-            After INSERT OR DELETE OR UPDATE 
+            After INSERT OR UPDATE 
             ON data
             FOR EACH ROW
             EXECUTE FUNCTION history();

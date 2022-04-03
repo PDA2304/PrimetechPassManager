@@ -7,10 +7,13 @@ use App\Http\Helpers\CheckHelpers;
 use App\Http\Requests\RequestCreateData;
 use App\Http\Requests\RequestUpdateData;
 use App\Http\Requests\DataSelectRequest;
+use App\Http\Resources\ActionDataShowResources;
 use App\Http\Resources\DataResource;
 use App\Http\Resources\IndexDataResource;
+use App\Models\Action;
 use App\Models\Data;
-use Illuminate\Http\Request;
+use App\Models\DataUser;
+use Jenssegers\Date\Date;
 
 class DataController extends Controller
 {
@@ -60,6 +63,22 @@ class DataController extends Controller
         return response()->json(new DataResource($result));
     }
 
+    // Вывод для окна Описание данных
+    public function dataInfo($id)
+    {
+        $data = Data::find($id);
+        $history =  ActionDataShowResources::collection(Action::where("data_id", "=", $id)->orderBy("id", 'DESC')->get());
+        $share = DataUser::where("data_id", "=", $id)->get();
+        return response()->json([
+            "user_id" => $data->user_id,
+            "user_name" => $data->employee->user_name,
+            "user_share" => $share,
+            "action" => $history,
+            'created_at' => Date::parse($data->created_at)->format('j F Y'),
+            'updated_at' => Date::parse($data->updated_at)->format('j F Y')
+        ], 200);
+    }
+
     // Вывод логически удаленных данных
     public function indexLogicDelete($id)
     {
@@ -106,8 +125,7 @@ class DataController extends Controller
      */
     public function destroyDataAll($id)
     {
-        $result =  Data::where("user_id", "=", $id)->where('logic_delete', 1);
-        $result->delete();
+        $result =  Data::where("user_id", "=", $id)->where('logic_delete', "=", 1)->delete();
         return response()->json($result);
     }
 

@@ -32,6 +32,7 @@ Route::apiResources([
 ]);// Базовые маршруты всех конроллеров
 
 #region Маршруты к контроллеру Data
+Route::get('/data/dataInfo/{id}',[DataController::class,'dataInfo']);
 Route::get('/data/indexLogicDelete/{id}',[DataController::class, 'indexLogicDelete']); // Маршрут для вывода удаленных данных пользователя
 Route::get('/data/indexUser/{id}',[DataController::class, 'indexUser']); //Маршрут для вывода данных определенного пользователя
 Route::post('/data/logicDelete/{id}',[DataController::class, 'logicDelete']); // Маршрут для логического удаления данных
