@@ -1,10 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:passmanager/bloc/data_info/data_info_cubit.dart';
 import 'package:passmanager/constant/colors.dart';
-import 'package:passmanager/widget/button_max_width.dart';
 
-class DataInfo extends StatelessWidget {
-  const DataInfo({Key? key}) : super(key: key);
+class ShowDataInfo extends StatelessWidget {
+  final int dataId;
+
+  const ShowDataInfo({Key? key, required this.dataId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,128 +15,158 @@ class DataInfo extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: blue,
         centerTitle: true,
-        title: Text("Информация и описание"),
+        title: const Text("Информация и описание"),
       ),
-      body: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-          },
-        ),
-        child:  CustomScrollView(
-            slivers: <Widget>[
-              SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _Text("Тип", "Учетные данные"),
-                      _Text("Размер", "2 КБ"),
-                      _Text("Владелец", "isip_d.a.pahomov@mpt.ru"),
-                      _Text("Дата создания", "09.03.2022"),
-                      _Text("Дата изменения", "09.03.2022"),
-                      Divider(
-                        color: grey,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text("Управление доступом",),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Row(
-                            children: [
-                              const CircleAvatar(
-                                radius: 20,
-                                child: Text("P"),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(5),
-                                child: Container(
-                                  color: black,
-                                  height: 50,
-                                  width: 1,
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width - 71,
-                                height: 50,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 10,
-                                  physics: BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return const Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                      child: CircleAvatar(
-                                        radius: 20,
-                                        child: Text("D"),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
+      body: BlocBuilder<DataInfoCubit, DataInfoState>(
+        builder: (context, state) {
+          if (state is! DataInfoLoad) {
+            context.read<DataInfoCubit>().dataInfo(dataId);
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+              },
+            ),
+            child: SingleChildScrollView(
+              physics: const ScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _text("Владелец", state.dataInfo.userName!),
+                  _text("Дата создания", state.dataInfo.created!),
+                  _text("Дата изменения", state.dataInfo.update!),
+                  _userContainer(context, state.dataInfo.userName!,
+                      state.dataInfo.userId!),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state.dataInfo.action!.length,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(
+                              state.dataInfo.action![index].employee!.login!),
+                          subtitle:
+                              Text(state.dataInfo.action![index].typeAction),
+                          trailing:
+                              Text(state.dataInfo.action![index].actionDate!),
+                          leading: CircleAvatar(
+                            backgroundColor:
+                                GenerateColor(state.dataInfo.userId),
+                            radius: 20,
+                            child: Text(
+                              state.dataInfo.userName![0],
+                              style: const TextStyle(color: white),
+                            ),
                           ),
                         ),
-                      ),
-                      Divider(
-                        color: grey,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text("История",style: TextStyle(fontSize: 14),),
-                      ),
-                      Test(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Button(onPressed: (){},text: "Еще",foregroundColor:blue,backgroundColor:  Colors.transparent,),
-                      )
-                    ],
-                  ))
-            ],
-          ),
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget Test() {
-    List<String> testData = [
-      "Удаление",
-      "Добавление",
-      "Добавление",
-      "Добавление",
-      "Добавление",
-    ];
-    List<Card> list = <Card>[];
-    for (var post in testData) {
-      list.add(Card(
-        child: ListTile(
-          title: Text("isip_d.a.pahomov@mpt.ru"),
-          subtitle: Text(post),
-          trailing: Text("20.03.2022"),
-          leading: CircleAvatar(
-            radius: 20,
-            child: Text("D1"),
+  Widget _userContainer(
+    BuildContext context,
+    String name,
+    int userId,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(
+          color: grey,
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: Text(
+            "Управление доступом",
           ),
         ),
-      ));
-    }
-    return Expanded(
-        child: Column(
-      children: [...list],
-    ));
+        InkWell(
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              children: [
+                Container(
+                  child: CircleAvatar(
+                    backgroundColor: GenerateColor(userId),
+                    radius: 20,
+                    child: Text(
+                      name[0],
+                      style: const TextStyle(color: white),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Container(
+                    color: black,
+                    height: 50,
+                    width: 1,
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 71,
+                  height: 50,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 0,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return const Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: CircleAvatar(
+                          radius: 20,
+                          child: Text("D"),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const Divider(
+          color: grey,
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: Text(
+            "История",
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+      ],
+    );
   }
 
-  Widget _Text(String header, String content) {
+  Widget _text(String header, String content) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text(header,style: TextStyle(fontSize: 18,color: black),), Text(content,style: TextStyle(),)],
+        children: [
+          Text(
+            header,
+            style: const TextStyle(fontSize: 18, color: black),
+          ),
+          Text(content)
+        ],
       ),
     );
   }

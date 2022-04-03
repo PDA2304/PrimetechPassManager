@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:passmanager/constant/config.dart';
+import 'package:passmanager/data/model/Action.dart';
 import 'package:passmanager/data/model/Data.dart';
+import 'package:passmanager/data/model/DataInfo.dart';
 import 'package:passmanager/data/model/Employee.dart';
 import 'package:passmanager/data/model/Trash.dart';
 
@@ -9,8 +11,8 @@ import 'package:passmanager/data/model/Trash.dart';
 /// [baseUrl] Ссылка к API
 class NetworkService {
   final dio = Dio();
-  String baseUrl = "http://52.250.99.102:8888/api/";
-  // String baseUrl = "http://192.168.0.92:8888/api/"; //locale
+  String baseUrl = "http://51.250.99.102:8888/api/";
+  // String baseUrl = "http://192.168.157.128:8888/api/"; //locale
 
   /// Функция регистрации
   /// если возращается 200 регистрация прошла успешно
@@ -171,6 +173,7 @@ class NetworkService {
     }
   }
 
+  ///Восстановление всех данных
   Future logicRestorationDataAll() async {
     try {
       final response = await dio
@@ -180,6 +183,7 @@ class NetworkService {
     }
   }
 
+  ///Восстановление выбранных данных
   Future logicRestorationDataSelection(List<int> list) async {
     try {
       var formData = FormData.fromMap({"data_selection[]": list});
@@ -192,17 +196,47 @@ class NetworkService {
     }
   }
 
-  Future  deleteDataSelection(List<int> list) async{
-    try{
+  ///Удаление выбранных элементов в корзине
+  Future deleteDataSelection(List<int> list) async {
+    try {
       var formData = FormData.fromMap({"data_selection[]": list});
-      print(formData.fields);
-      final response = await dio
-          .delete("${baseUrl}data/destroyDataSelect/${Config.userId}", data: formData);
-      print(response.data);
-    }on DioError catch(e)
-    {
+      final response = await dio.delete(
+          "${baseUrl}data/destroyDataSelect/${Config.userId}",
+          data: formData);
+    } on DioError catch (e) {
       print(e.message);
       print(e.response!.data);
     }
+  }
+
+  Future deleteDataAll() async
+  {
+    try{
+      var response = await dio.delete("${baseUrl}data/destroyDataAll/${Config.userId}");
+    }on DioError catch(e){
+      print(e.message);
+    }
+  }
+
+  /// Вывод истории дейсвтий над данными
+  Future<List<Action>> actionDataUser(int dataId) async {
+    try {
+      final response = await dio.get("${baseUrl}dataShow/$dataId");
+      return Action().allAction(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      return <Action>[];
+    }
+  }
+
+  ///Вывод информациия для экрана описание данных
+  Future<DataInfo> indexDataInfo(int dataId) async{
+      try{
+         var respone = await dio.get("${baseUrl}data/dataInfo/${dataId}");
+         return DataInfo.fromJson(respone.data);
+      } on DioError catch(e){
+        print(e.message);
+        return DataInfo();
+      }
   }
 }

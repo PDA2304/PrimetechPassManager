@@ -3,11 +3,11 @@
  */
 class Employee {
   final int id;
-  final bool role;
-  final String token;
-  final String userName;
-  final String login;
-  final String password;
+  final bool? role;
+  final String? token;
+  final String? userName;
+  final String? login;
+  final String? password;
 
   Employee({
     this.id = 1,

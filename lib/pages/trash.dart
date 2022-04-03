@@ -20,7 +20,8 @@ class TrashPages extends StatelessWidget {
       title: BlocBuilder<TrashCubit, TrashState>(
         builder: (context, state) {
           return state.isSelect
-              ? Text(context.read<TrashCubit>().selectText(TypeText.countSelect))
+              ? Text(
+                  context.read<TrashCubit>().selectText(TypeText.countSelect))
               : const Text("Корзина");
         },
       ),
@@ -44,10 +45,7 @@ class TrashPages extends StatelessWidget {
       ),
       actions: [
         BlocConsumer<TrashCubit, TrashState>(
-          listener: (context, state) {
-            // if ((state) is TrashRequest)
-            //     Navigator.pop(context);
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             return state.isSelect || isEmpty
                 ? Container()
@@ -131,7 +129,7 @@ class TrashPages extends StatelessWidget {
             isEmpty = state.list.isEmpty;
             return state.list.isEmpty
                 ? RefreshIndicator(
-                    onRefresh: _refreshData,
+                    onRefresh: () => context.read<TrashCubit>().onRefresh(),
                     child: ScrollConfiguration(
                       behavior: ScrollConfiguration.of(context).copyWith(
                         dragDevices: {
@@ -139,30 +137,35 @@ class TrashPages extends StatelessWidget {
                           PointerDeviceKind.mouse,
                         },
                       ),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.delete_outline_outlined,
-                              size: 100,
-                              color: grey,
-                            ),
-                            Text(
-                              "Корзина пуста",
-                              style: TextStyle(
-                                  fontSize: 22,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.delete_outline_outlined,
+                                  size: 100,
                                   color: grey,
-                                  fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  "Корзина пуста",
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      color: grey,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   )
                 : RefreshIndicator(
-                    onRefresh: _refreshData,
+                    onRefresh: () => context.read<TrashCubit>().onRefresh(),
                     child: ScrollConfiguration(
                       behavior: ScrollConfiguration.of(context).copyWith(
                         dragDevices: {
@@ -303,7 +306,10 @@ class TrashPages extends StatelessWidget {
       title: const Text("Очистка корзины"),
       actions: [
         CupertinoDialogAction(
-          onPressed: () {},
+          onPressed: () {
+            context.read<TrashCubit>().deleteDataAll();
+            Navigator.pop(context);
+          },
           child: const Text("Да"),
           textStyle: const TextStyle(color: red),
         ),

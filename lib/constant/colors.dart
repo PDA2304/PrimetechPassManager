@@ -25,9 +25,9 @@ const List<Color> colorAvatar = [
   Color(0xFF329A4B),
 ];
 
-/// Функция выдачи увета в зависимости от id пользователя
-Color GenerateColor() {
-  int colorIndex = Config.userId - ((Config.userId / 10).ceil() * 10);
+/// Функция выдачи цвета в зависимости от id пользователя
+Color GenerateColor(userId) {
+  int colorIndex = userId - ((userId / 10).ceil() * 10);
   print(colorIndex);
   return colorAvatar[colorIndex.abs()];
 }

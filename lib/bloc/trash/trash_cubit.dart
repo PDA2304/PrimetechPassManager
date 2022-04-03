@@ -18,6 +18,8 @@ class TrashCubit extends Cubit<TrashState> {
         emit(TrashLoad(value));
       });
 
+  Future onRefresh() async => network.indexLogicDeleteData().then((value) => emit(TrashLoad(value)));
+
   /// Функция выбара элементов в корзине
   void selectData(int index, bool check) {
     final list = (state as TrashLoad).list;
@@ -68,6 +70,12 @@ class TrashCubit extends Cubit<TrashState> {
     removeSelectListData();
   }
 
+  void deleteDataAll(){
+    final list = (state as TrashLoad).list;
+    list.clear();
+    network.deleteDataAll().then((value) => emit(TrashLoad(list)));
+  }
+
   /// Удаление выбранных элементов из списка корзины
   void removeSelectListData() {
     final list = (state as TrashLoad).list;
@@ -97,9 +105,6 @@ class TrashCubit extends Cubit<TrashState> {
   /// Функция
   void closeSelect() {
     final list = (state as TrashLoad).list;
-    // list.where((element) => element.check == true).forEach((element) {
-    //   element.check = false;
-    // });
     selectCheckChanged(list, true);
     emit(TrashLoad(list, isSelect: false));
   }

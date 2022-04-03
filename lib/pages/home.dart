@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     foregroundColor: white,
-                    backgroundColor: GenerateColor(),
+                    backgroundColor: GenerateColor(Config.userId),
                     radius: 30,
                     child: Center(
                         child: Text(

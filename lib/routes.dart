@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passmanager/bloc/add_data_user/add_data_bloc.dart';
+import 'package:passmanager/bloc/data_info/data_info_cubit.dart';
 import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/bloc/show_data/show_data_cubit.dart';
 import 'package:passmanager/bloc/sing_in/sing_in_bloc.dart';
@@ -73,7 +74,11 @@ class AppRouter {
         }
       case dataInfo:
         {
-          return MaterialPageRoute(builder: (_) => DataInfo());
+          var dataId = settings.arguments as int;
+          return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                  create: (context) => DataInfoCubit(),
+                  child: ShowDataInfo(dataId: dataId)));
         }
       case trash:
         {

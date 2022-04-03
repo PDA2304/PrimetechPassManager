@@ -81,12 +81,11 @@ class ShowData extends StatelessWidget {
                 switch (item) {
                   case 0:
                     {
-                      Navigator.pushNamed(context, dataInfo);
+                      Navigator.pushNamed(context, dataInfo,arguments: dataId);
                       break;
                     }
                   case 2:
                     {
-                      print(dataId);
                       context.read<ShowDataCubit>().logicDeleteData(dataId);
                       break;
                     }
