@@ -104,9 +104,12 @@ class DataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function copy($id)
     {
-        //
+        $user = Data::find($id);
+        $data = $user->replicate();
+        $data->save();
+        return view('update');
     }
 
     /**
@@ -115,8 +118,8 @@ class DataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function redaction()
     {
-        //
+        return view('redaction');
     }
 }

@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
+Route::get('/copy/{id}', [DataController::class, 'copy'])->name('copy');
+Route::get('/redaction', [DataController::class, 'redaction'])->name('redaction');
 Route::get('/', [AuthController::class, 'indexLogin'])->name("login");
 Route::get('/reg',  [AuthController::class, 'indexReg'])->name("reg");
 Route::get('/add/data', [DataController::class, 'createData'])->middleware("auth")->name('createData');
