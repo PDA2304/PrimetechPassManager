@@ -3,7 +3,7 @@ import 'package:passmanager/data/model/Employee.dart';
 class Action {
   final String? actionDate;
   Employee? employee;
-  final String typeAction;
+  final String? typeAction;
 
   Action({this.actionDate = "", this.employee,this.typeAction = ""});
 

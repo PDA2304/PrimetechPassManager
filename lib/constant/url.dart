@@ -7,3 +7,5 @@ const String showData = '/show_data';
 const String confirmationCode = '/confirmation_code';
 const String dataInfo = '/datt_info';
 const String trash = '/trash';
+const String shareAddUser = '/shareAddUser';
+const String settings = "/settings";

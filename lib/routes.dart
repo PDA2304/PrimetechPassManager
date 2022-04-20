@@ -12,6 +12,8 @@ import 'package:passmanager/pages/add_data.dart';
 import 'package:passmanager/pages/confirmation_code.dart';
 import 'package:passmanager/pages/data_info.dart';
 import 'package:passmanager/pages/home.dart';
+import 'package:passmanager/pages/settings.dart';
+import 'package:passmanager/pages/share_add_user.dart';
 import 'package:passmanager/pages/show_data.dart';
 import 'package:passmanager/pages/sing_in.dart';
 import 'package:passmanager/pages/sing_up.dart';
@@ -24,8 +26,8 @@ class AppRouter {
   HomeCubit homeCubit = HomeCubit();
 
   /// Функция которая возращает верску экрана по заданному пути
-  Route<dynamic>? generateRouter(RouteSettings settings) {
-    switch (settings.name) {
+  Route<dynamic>? generateRouter(RouteSettings routSettings) {
+    switch (routSettings.name) {
       case singIn:
         {
           return MaterialPageRoute(
@@ -58,7 +60,7 @@ class AppRouter {
         }
       case showData:
         {
-          var dataId = settings.arguments as int;
+          var dataId = routSettings.arguments as int;
           return MaterialPageRoute(
               builder: (_) => BlocProvider(
                   create: (context) => ShowDataCubit(),
@@ -66,7 +68,7 @@ class AppRouter {
         }
       case confirmationCode:
         {
-          var test = settings.arguments as Map<String, Object?>;
+          var test = routSettings.arguments as Map<String, Object?>;
           return MaterialPageRoute(
               builder: (_) => ConfirmationCode(
                     argument: test,
@@ -74,7 +76,7 @@ class AppRouter {
         }
       case dataInfo:
         {
-          var dataId = settings.arguments as int;
+          var dataId = routSettings.arguments as int;
           return MaterialPageRoute(
               builder: (_) => BlocProvider(
                   create: (context) => DataInfoCubit(),
@@ -88,6 +90,16 @@ class AppRouter {
                     child: TrashPages(),
                   ));
         }
+      case shareAddUser:
+        {
+          var dataId = routSettings.arguments as int;
+          return MaterialPageRoute(
+              builder: (_) => ShareAddUser(dataId: dataId,));
+        }
+      case settings: {
+        return MaterialPageRoute(builder: (_)=> Settings());
+        break;
+      }
     }
     return null;
   }

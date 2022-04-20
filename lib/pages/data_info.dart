@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passmanager/bloc/data_info/data_info_cubit.dart';
 import 'package:passmanager/constant/colors.dart';
+import 'package:passmanager/constant/config.dart';
+import 'package:passmanager/data/model/DataUser.dart';
 
 class ShowDataInfo extends StatelessWidget {
   final int dataId;
@@ -11,6 +13,7 @@ class ShowDataInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(dataId);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: blue,
@@ -41,18 +44,18 @@ class ShowDataInfo extends StatelessWidget {
                   _text("Дата создания", state.dataInfo.created!),
                   _text("Дата изменения", state.dataInfo.update!),
                   _userContainer(context, state.dataInfo.userName!,
-                      state.dataInfo.userId!),
+                      state.dataInfo.userId!, state.dataInfo.share!),
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: state.dataInfo.action!.length,
                     physics: BouncingScrollPhysics(),
+                    itemCount: state.dataInfo.action!.length,
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
                           title: Text(
                               state.dataInfo.action![index].employee!.login!),
                           subtitle:
-                              Text(state.dataInfo.action![index].typeAction),
+                              Text(state.dataInfo.action![index].typeAction!),
                           trailing:
                               Text(state.dataInfo.action![index].actionDate!),
                           leading: CircleAvatar(
@@ -81,6 +84,7 @@ class ShowDataInfo extends StatelessWidget {
     BuildContext context,
     String name,
     int userId,
+    List<DataUser> share,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,16 +128,23 @@ class ShowDataInfo extends StatelessWidget {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 0,
-                    physics: const BouncingScrollPhysics(),
+                    itemCount: share.length,
+                    physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
-                      return const Padding(
-                        padding: EdgeInsets.only(right: 5),
-                        child: CircleAvatar(
-                          radius: 20,
-                          child: Text("D"),
-                        ),
-                      );
+                      if (!(share[index].employee!.id == Config.userId || userId == share[index].employee!.id))
+                        return Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: CircleAvatar(
+                            backgroundColor:
+                                GenerateColor(share[index].employee!.id),
+                            radius: 20,
+                            child: Text(
+                              share[index].employee!.userName![0],
+                              style: TextStyle(color: white),
+                            ),
+                          ),
+                        );
+                      return Container();
                     },
                   ),
                 ),

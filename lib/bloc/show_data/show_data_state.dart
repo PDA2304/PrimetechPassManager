@@ -12,7 +12,7 @@ abstract class ShowDataState {
   String? passwordValidation;
   String? descriptionValidation;
 
-  ShowDataState( {
+  ShowDataState({
     this.name = '',
     this.login = '',
     this.password = '',

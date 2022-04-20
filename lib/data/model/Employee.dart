@@ -37,4 +37,13 @@ class Employee {
         'login': login,
         'password': password,
       };
+
+
+  List<Employee> allDataUser(List<dynamic> json) {
+    List<Employee> result = <Employee>[];
+    json.forEach((v) {
+      result.add(Employee.fromJson(v));
+    });
+    return result;
+  }
 }

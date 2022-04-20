@@ -21,6 +21,7 @@ import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'constant/url.dart';
+import 'package:dcdg/dcdg.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

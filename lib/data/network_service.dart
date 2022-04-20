@@ -3,6 +3,7 @@ import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/data/model/Action.dart';
 import 'package:passmanager/data/model/Data.dart';
 import 'package:passmanager/data/model/DataInfo.dart';
+import 'package:passmanager/data/model/DataUser.dart';
 import 'package:passmanager/data/model/Employee.dart';
 import 'package:passmanager/data/model/Trash.dart';
 
@@ -11,6 +12,7 @@ import 'package:passmanager/data/model/Trash.dart';
 /// [baseUrl] Ссылка к API
 class NetworkService {
   final dio = Dio();
+  // String baseUrl = "http://192.168.0.92:8888/api/";
   String baseUrl = "http://51.250.99.102:8888/api/";
   // String baseUrl = "http://192.168.157.128:8888/api/"; //locale
 
@@ -119,13 +121,13 @@ class NetworkService {
   /// Дата создания
   /// Название
   /// Номер
-  Future<List<IndexData>> allUserData() async {
+  Future<List<DataUser>> allUserData() async {
     try {
       final response =
           await dio.get("${baseUrl}data/indexUser/${Config.userId}");
-      return IndexData().allData(response.data);
+      return DataUser().allDataUser(response.data);
     } on DioError catch (e) {
-      return <IndexData>[];
+      return <DataUser>[];
     }
   }
 
@@ -232,11 +234,34 @@ class NetworkService {
   ///Вывод информациия для экрана описание данных
   Future<DataInfo> indexDataInfo(int dataId) async{
       try{
-         var respone = await dio.get("${baseUrl}data/dataInfo/${dataId}");
-         return DataInfo.fromJson(respone.data);
+         var response = await dio.get("${baseUrl}data/dataInfo/${dataId}");
+         return DataInfo.fromJson(response.data);
       } on DioError catch(e){
         print(e.message);
         return DataInfo();
       }
+  }
+
+  Future<List<Employee>> employeeSearch(String toSearch) async
+  {
+    try{
+      var response = await dio.post(baseUrl+"EmployeeSearch/$toSearch");
+      return Employee().allDataUser(response.data);
+    }on DioError catch(e){
+      print(e.message);
+      print(e.response);
+      return <Employee>[];
+    }
+  }
+
+  Future addDataUser(int userId,int dataId)async
+  {
+    try{
+      var formData = FormData.fromMap({"user_selection[]": userId});
+      var response = dio.post(baseUrl+"data_user/${dataId}",data:formData);
+    } on DioError catch(e)
+    {
+      print(e.message);
+    }
   }
 }

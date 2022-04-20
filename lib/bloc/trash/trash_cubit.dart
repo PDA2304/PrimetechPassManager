@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/data/model/Data.dart';
+import 'package:passmanager/data/model/DataUser.dart';
 import 'package:passmanager/data/model/Trash.dart';
 import 'package:passmanager/data/network_service.dart';
 
@@ -33,11 +34,11 @@ class TrashCubit extends Cubit<TrashState> {
   /// Функция в которой создается лист по классу IndexData
   /// Данные в этот листа выбранных данных. Лист выбранных данных класса Trash
   /// Поэтому перезаписываем из лсита выбранных данных в лист типа IndexData
-  List<IndexData> actionListIndexData(List<Trash> list) {
-    List<IndexData> listIndexData = <IndexData>[];
+  List<DataUser> actionListIndexData(List<Trash> list) {
+    List<DataUser> listIndexData = <DataUser>[];
     list.forEach((element) {
-      listIndexData.add(IndexData(
-          id: element.id, createdAt: element.createdAt, name: element.name));
+      listIndexData.add(DataUser(data: IndexData(
+          id: element.id, createdAt: element.createdAt, name: element.name)));
     });
     return listIndexData;
   }

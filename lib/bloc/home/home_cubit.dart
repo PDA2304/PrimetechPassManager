@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:passmanager/data/model/Data.dart';
+import 'package:passmanager/data/model/DataUser.dart';
 import 'package:passmanager/data/network_service.dart';
 
 part 'home_state.dart';
@@ -17,7 +18,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// Функция которая получает восстановленные данные из корзины и снова добаляет
   /// в основной список данных пользователя
-  void restorationData(List<IndexData> indexDataList){
+  void restorationData(List<DataUser> indexDataList){
     final list = (state as HomeLoad).listData;
     list.addAll(indexDataList);
     emit(HomeLoad(list));

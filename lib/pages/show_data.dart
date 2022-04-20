@@ -21,9 +21,9 @@ class ShowData extends StatelessWidget {
   ShowData({Key? key, required this.dataId}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     context.read<ShowDataCubit>().loadDataUser(dataId);
-
+    bool creator = false;
     return Scaffold(
       appBar: AppBar(
         title: Text("Просмотр данных"),
@@ -32,7 +32,7 @@ class ShowData extends StatelessWidget {
         actions: [
           PopupMenuButton(
               tooltip: "Действия",
-              itemBuilder: (context) => [
+              itemBuilder: (context) =>  creator ?  [
                     PopupMenuItem(
                         value: 0,
                         child: Row(
@@ -47,7 +47,7 @@ class ShowData extends StatelessWidget {
                             Text('Описание')
                           ],
                         )),
-                    PopupMenuItem(
+                   PopupMenuItem(
                         value: 1,
                         child: Row(
                           children: const [
@@ -76,12 +76,31 @@ class ShowData extends StatelessWidget {
                         ],
                       ),
                     )
-                  ],
+                  ] : [ PopupMenuItem(
+                  value: 0,
+                  child: Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Icon(
+                          Icons.info_outline,
+                          color: blue,
+                        ),
+                      ),
+                      Text('Описание')
+                    ],
+                  )),] ,
               onSelected: (item) {
                 switch (item) {
                   case 0:
                     {
-                      Navigator.pushNamed(context, dataInfo,arguments: dataId);
+                      Navigator.pushNamed(context, dataInfo, arguments: dataId);
+                      break;
+                    }
+                  case 1:
+                    {
+                      Navigator.pushNamed(context, shareAddUser,
+                          arguments: dataId);
                       break;
                     }
                   case 2:
@@ -100,7 +119,9 @@ class ShowData extends StatelessWidget {
       ),
       body: BlocConsumer<ShowDataCubit, ShowDataState>(
           listener: (context, state) {
-        if ((state) is ShowDataDelete)
+             creator = context.read<ShowDataCubit>().creator;
+
+            if ((state) is ShowDataDelete)
           Future.delayed(Duration(milliseconds: 500), () {
             Navigator.pushNamedAndRemoveUntil(context, home, (route) => false);
           });

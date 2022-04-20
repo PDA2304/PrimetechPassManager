@@ -6,6 +6,7 @@ import 'package:passmanager/bloc/home/home_cubit.dart';
 import 'package:passmanager/constant/colors.dart';
 import 'package:passmanager/constant/config.dart';
 import 'package:passmanager/constant/url.dart';
+import 'package:passmanager/data/model/DataUser.dart';
 import 'package:passmanager/widget/floating_action_message.dart';
 
 class Home extends StatelessWidget {
@@ -14,7 +15,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<HomeCubit>(context).allData();
-
+    List<DataUser> search = <DataUser>[];
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -75,7 +76,7 @@ class Home extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Navigator.pushNamed(context, settings);
                   },
                 ),
                 ListTile(
@@ -112,7 +113,7 @@ class Home extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                showSearch(context: context, delegate: CustomSearch());
+                showSearch(context: context, delegate: CustomSearch(search));
               },
               icon: const Icon(Icons.search))
         ],
@@ -130,6 +131,7 @@ class Home extends StatelessWidget {
         }
 
         if (state.listData.isNotEmpty) {
+          search = state.listData;
           return RefreshIndicator(
             onRefresh: () => context.read<HomeCubit>().onRefresh(),
             child: ScrollConfiguration(
@@ -145,13 +147,17 @@ class Home extends StatelessWidget {
                     return Card(
                       child: InkWell(
                         child: ListTile(
+                          leading: state.listData[index].employee!.id ==
+                                  Config.userId
+                              ? null
+                              : Icon(Icons.share),
                           onTap: () {
                             Navigator.pushNamed(context, showData,
-                                arguments: state.listData[index].id);
+                                arguments: state.listData[index].data!.id);
                           },
-                          title: Text(state.listData[index].name,
+                          title: Text(state.listData[index].data!.name,
                               style: const TextStyle(fontSize: 18)),
-                          subtitle: Text(state.listData[index].createdAt),
+                          subtitle: Text(state.listData[index].data!.createdAt),
                           trailing: const Icon(
                             Icons.arrow_forward_ios_rounded,
                             size: 18,
@@ -214,6 +220,10 @@ class Home extends StatelessWidget {
 }
 
 class CustomSearch extends SearchDelegate {
+  final List<DataUser> search;
+
+  CustomSearch(this.search);
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -237,11 +247,60 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Text("текст");
+    var  t = search.where((element) => element.data!.name.contains(query)).toList();
+    return ListView.builder(
+        itemCount: t .length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: InkWell(
+              child: ListTile(
+                leading: t[index].employee!.id == Config.userId
+                    ? null
+                    : Icon(Icons.share),
+                onTap: () {
+                  close(context, null);
+                  Navigator.pushNamed(context, showData,
+                      arguments: t[index].data!.id);
+                },
+                title: Text(t[index].data!.name,
+                    style: const TextStyle(fontSize: 18)),
+                subtitle: Text(t[index].data!.createdAt),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 18,
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Text("");
+    return ListView.builder(
+        itemCount: search.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: InkWell(
+              child: ListTile(
+                leading: search[index].employee!.id == Config.userId
+                    ? null
+                    : Icon(Icons.share),
+                onTap: () {
+                  close(context, null);
+                  Navigator.pushNamed(context, showData,
+                      arguments: search[index].data!.id);
+                },
+                title: Text(search[index].data!.name,
+                    style: const TextStyle(fontSize: 18)),
+                subtitle: Text(search[index].data!.createdAt),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 18,
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
